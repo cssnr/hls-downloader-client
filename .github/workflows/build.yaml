@@ -87,10 +87,10 @@ jobs:
           fileName: 'ffmpeg-master-latest-linux64-gpl.tar.xz'
           out-file-path: 'dist'
           latest: true
-          extract: true
 
       - name: "Move FFmpeg"
         run: |
+          tar -xf dist/ffmpeg-master-latest-linux64-gpl.tar.xz -C dist ffmpeg-master-latest-linux64-gpl/bin/ffmpeg
           mv dist/ffmpeg-master-latest-linux64-gpl/bin/ffmpeg dist/ffmpeg
           ls dist
 
