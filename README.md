@@ -1,6 +1,8 @@
 # HLS Video Downloader Client
 
-HLS Video Downloader Native Messaging client for Windows, Linux and macOS.
+HLS Video Downloader Native Messaging Client for Windows, Linux and macOS.
+
+Web Extension: https://github.com/cssnr/hls-video-downloader
 
 ## Browsers
 

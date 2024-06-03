@@ -90,9 +90,7 @@ jobs:
 
       - name: "Move FFmpeg"
         run: |
-          ls dist
           tar -xf dist/ffmpeg-master-latest-linux64-gpl.tar.xz -C dist ffmpeg-master-latest-linux64-gpl/bin/ffmpeg
-          ls -R .
           mv dist/ffmpeg-master-latest-linux64-gpl/bin/ffmpeg dist/ffmpeg
           ls dist
 
