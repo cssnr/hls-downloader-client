@@ -92,6 +92,7 @@ jobs:
         run: |
           ls dist
           tar -xf dist/ffmpeg-master-latest-linux64-gpl.tar.xz ffmpeg-master-latest-linux64-gpl/bin/ffmpeg -C dist
+          ls dist
           mv dist/ffmpeg-master-latest-linux64-gpl/bin/ffmpeg dist/ffmpeg
           ls dist
 
