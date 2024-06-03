@@ -39,6 +39,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Source: "dist\client\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "dist\manifest-chrome.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "dist\manifest-firefox.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "dist\ffmpeg.exe"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

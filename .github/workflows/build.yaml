@@ -26,9 +26,19 @@ jobs:
           pyinstaller --noconfirm client.spec
           python manifest.py
 
-      - name: "Debug"
+      - name: "Download FFmpeg"
+        uses: robinraju/release-downloader@v1.10
+        with:
+          repository: 'BtbN/FFmpeg-Builds'
+          fileName: 'ffmpeg-master-latest-win64-gpl.zip'
+          out-file-path: 'dist'
+          latest: true
+          extract: true
+
+      - name: "Move FFmpeg"
         run: |
-          ls -R dist
+          mv dist/ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe dist/ffmpeg.exe
+          ls dist
 
       - name: "Inno Setup"
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
@@ -69,6 +79,20 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+
+      - name: "Download FFmpeg"
+        uses: robinraju/release-downloader@v1.10
+        with:
+          repository: 'BtbN/FFmpeg-Builds'
+          fileName: 'ffmpeg-master-latest-linux64-gpl.tar.xz'
+          out-file-path: 'dist'
+          latest: true
+          extract: true
+
+      - name: "Move FFmpeg"
+        run: |
+          mv dist/ffmpeg-master-latest-linux64-gpl/bin/ffmpeg dist/ffmpeg
+          ls dist
 
       - name: "Debian Package"
         run: |

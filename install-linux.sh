@@ -29,6 +29,8 @@ mkdir -p "${firefox}"
 
 cp "src/client.py" "${PACKAGE}/opt/${APP_NAME}/client.py"
 chmod +x "${PACKAGE}/opt/${APP_NAME}/client.py"
+cp "dist/ffmpeg" "${PACKAGE}/opt/${APP_NAME}/ffmpeg"
+chmod +x "${PACKAGE}/opt/${APP_NAME}/ffmpeg"
 touch "${PACKAGE}/opt/${APP_NAME}/log.txt"
 chmod g+w "${PACKAGE}/opt/${APP_NAME}/log.txt"
 
