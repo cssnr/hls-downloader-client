@@ -1,0 +1,7 @@
+{
+  "name": "org.cssnr.hls.downloader",
+  "description": "HLS Video Downloader Client",
+  "path": "client.exe",
+  "type": "stdio",
+  "allowed_extensions": ["hls-video-downloader @cssnr.com"]
+}

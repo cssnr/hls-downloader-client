@@ -1,0 +1,7 @@
+{
+  "name": "org.cssnr.hls.downloader",
+  "description": "HLS Video Downloader Client",
+  "path": "client.exe",
+  "type": "stdio",
+  "allowed_origins": ["chrome-extension://hegknhbcmhoidbakopiiefkpjfeiefnb/"]
+}
