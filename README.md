@@ -19,7 +19,7 @@ Tested and working in the following browsers:
 ## Installing
 
 Download and run the installer for your operating system from the latest 
-[release](https://github.com/smashedr/python-native-messaging/releases/latest).
+[release](https://github.com/cssnr/hls-downloader-client/releases/latest).
 
 ## Building
 
@@ -44,10 +44,11 @@ python manifest.py
 bash install-linux.sh
 ```
 
-### MacOS Install
+### MacOS
 
 > [!NOTE]  
-> macOS must be manually installed until an automated installer process is created.
+> The macOS installer must be manually created until an automated process is added.  
+> For more details on a unix install, see [install-linux.sh](install-linux.sh).
 
 ```shell
 python manifest.py
