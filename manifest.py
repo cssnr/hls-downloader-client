@@ -12,7 +12,7 @@ firefox_ids: List[str] = [
     "hls-video-downloader@cssnr.com",
 ]
 chrome_ids: List[str] = [
-    "hegknhbcmhoidbakopiiefkpjfeiefnb",
+    "mpmiiaolodhanoalpjncddpmnkbjicbo",
 ]
 
 system = platform.system()
