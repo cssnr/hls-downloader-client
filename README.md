@@ -69,7 +69,7 @@ bash install-mac.sh
 ## More Info
 
 > [!NOTE]  
-> This information is for Linux/macOS. Windows uses a slightly different approach with the registry and packaged python.
+> This information is for Linux/macOS. Windows uses a different approach with registry and packaged python.
 
 Manifest files must be renamed to: `org.cssnr.hls.downloader.json`
 

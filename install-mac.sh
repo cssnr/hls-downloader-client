@@ -20,4 +20,6 @@ mv "${DEST}/manifest-chrome.json" "${DEST}/chrome/${APP_NAME}.json"
 curl "${FFMPEG_ZIP}" -o "${DEST}/ffmpeg.zip"
 unzip "${DEST}/ffmpeg.zip" -d "${DEST}"
 
-packagesbuild hls-downloader-client.pkgproj
+packagesbuild client.pkgproj
+mkdir out
+mv "build/hls-downloader-client.pkg" "out/install-macos.pkg"
