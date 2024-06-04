@@ -26,4 +26,4 @@ ls -lah
 
 packagesbuild client.pkgproj
 mkdir out
-mv "${DEST}/hls-downloader-client.pkg" "out/install-macos.pkg"
+mv "build/hls-downloader-client.pkg" "out/install-macos.pkg"
