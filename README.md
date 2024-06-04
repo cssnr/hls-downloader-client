@@ -54,7 +54,7 @@ python manifest.py
 
 Create the Installer:
 ```shell
-iscc.exe install-win.iss
+iscc.exe client.iss
 ```
 
 ### Linux
@@ -63,7 +63,7 @@ Note: FFmpeg must be placed in `dist/ffmpeg`
 
 ```shell
 python manifest.py
-bash install-linux.sh
+bash build-linux.sh
 ```
 
 ### MacOS
@@ -71,6 +71,8 @@ bash install-linux.sh
 > [!NOTE]  
 > The macOS installer uses [Packages](http://s.sudre.free.fr/Software/Packages/about.html) 
 > which must be manually installed.
+
+Note: FFmpeg must be placed in `dist/ffmpeg`
 
 Build the App:
 ```shell
@@ -81,7 +83,7 @@ python manifest.py
 
 Create the Package:
 ```shell
-bash install-mac.sh
+bash build-mac.sh
 ```
 
 ## More Info
