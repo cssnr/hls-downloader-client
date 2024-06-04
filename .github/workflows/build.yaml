@@ -142,6 +142,7 @@ jobs:
 
       - name: "Download FFmpeg"
         run: |
+          mkdir -p dist
           curl "https://evermeet.cx/ffmpeg/ffmpeg-6.1.1.zip" -o "dist/ffmpeg.zip"
           unzip "dist/ffmpeg.zip" -d "dist"
           ls dist
