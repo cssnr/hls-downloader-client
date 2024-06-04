@@ -65,13 +65,6 @@ bash install-linux.sh
 > The macOS installer uses [Packages](http://s.sudre.free.fr/Software/Packages/about.html) 
 > which must be manually installed.
 
-Build the App:
-```shell
-python -m pip install pyinstaller
-pyinstaller --noconfirm client.spec
-python manifest.py
-```
-
 Create the Package:
 ```shell
 bash install-mac.sh
@@ -81,7 +74,7 @@ bash install-mac.sh
 
 Windows requires corresponding registry entries for the manifest files (see location links below).
 
-Windows and macOS requires packaging the app with `pyinstaller` to bundle python.
+Windows requires packaging the app with `pyinstaller` to bundle python.
 
 Manifest files must be renamed to `org.cssnr.hls.downloader.json` on Linux and macOS.
 

@@ -27,7 +27,7 @@ if system == 'Windows':
 elif system == 'Linux':
     client_path = f'/opt/{data["name"]}/client.py'
 elif system == 'Darwin':
-    client_path = f'/opt/{data["name"]}/client'
+    client_path = f'/opt/{data["name"]}/client.py'
 else:
     raise ValueError(f'Unsupported System: {system}')
 
