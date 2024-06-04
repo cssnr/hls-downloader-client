@@ -5,7 +5,7 @@ set -e
 APP_NAME="org.cssnr.hls.downloader"
 DEST="dist"
 FFMPEG_ZIP="https://evermeet.cx/ffmpeg/ffmpeg-6.1.1.zip"
-VERSION="0.1"
+VERSION="0.0.1"
 
 if [ "${GITHUB_EVENT_NAME}" == "release" ];then
     VERSION="${GITHUB_REF_NAME}"

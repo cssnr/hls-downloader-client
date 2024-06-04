@@ -5,7 +5,7 @@ set -e
 PKG_NAME="hls-downloader-client"
 APP_NAME="org.cssnr.hls.downloader"
 SOURCE="dist"
-VERSION="0.1"
+VERSION="0.0.1"
 
 if [ "${GITHUB_EVENT_NAME}" == "release" ];then
     VERSION="${GITHUB_REF_NAME}"
