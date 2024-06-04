@@ -68,12 +68,13 @@ bash install-mac.sh
 
 ## More Info
 
-> [!NOTE]  
-> This information is for Linux/macOS. Windows uses a different approach with registry and packaged python.
+Windows requires corresponding registry entries for the manifest files (see location links below).
 
-Manifest files must be renamed to: `org.cssnr.hls.downloader.json`
+Windows and macOS requires packaging the app with `pyinstaller` to bundle python.
 
-Manifest key `path` must be set to the absolute path to the `client.py` location.
+Manifest files must be renamed to `org.cssnr.hls.downloader.json` on Linux and macOS.
+
+Manifest key `path` must be set to the absolute path to the `client` location.
 
 Manifest files must be placed in specific directories:
 
