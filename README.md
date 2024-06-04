@@ -9,7 +9,7 @@ HLS Video Downloader Native Messaging Client for Windows, Linux and macOS.
 
 - Windows: [install-win.exe](https://github.com/cssnr/hls-downloader-client/releases/latest/download/install-win.exe)
 - Linux: [install-linux.deb](https://github.com/cssnr/hls-downloader-client/releases/latest/download/install-linux.deb)
-- macOS: Coming Soon...
+- macOS: [install-macos.pkg](https://github.com/cssnr/hls-downloader-client/releases/latest/download/install-macos.pkg)
 
 Web Extension: https://github.com/cssnr/hls-video-downloader
 
@@ -58,12 +58,18 @@ bash install-linux.sh
 ### MacOS
 
 > [!NOTE]  
-> The macOS installer must be manually created until an automated process is added.  
-> For more details on a unix install, see [install-linux.sh](install-linux.sh).
+> The macOS installer uses [Packages](http://s.sudre.free.fr/Software/Packages/about.html) 
+> which must be manually installed.
 
 ```shell
 python manifest.py
+bash install-mac.sh
 ```
+
+## More Info
+
+> [!NOTE]  
+> This information is for Linux/macOS. Windows uses a slightly different approach with the registry and packaged python.
 
 Manifest files must be renamed to: `org.cssnr.hls.downloader.json`
 
@@ -71,11 +77,10 @@ Manifest key `path` must be set to the absolute path to the `client.py` location
 
 Manifest files must be placed in specific directories:
 
-- Firefox: `~/Library/Application Support/Mozilla/NativeMessagingHosts`
-- Chromium: `~/Library/Application Support/Chromium/NativeMessagingHosts`
-- Google Chrome: `~/Library/Application Support/Google/Chrome/NativeMessagingHosts`
+- Firefox: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_manifests#manifest_location
+- Chrome: https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging#native-messaging-host-location
 
-If the `client` location is not writable by the user, a writable `log.txt`
+If the `client` location is not writable by the user and a writable `log.txt`
 must be created at that location due to the current logging configuration in the [client.py](src%2Fclient.py).
 
 The `client.py` must be executable by the user with Python installed and working.
