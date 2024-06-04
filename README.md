@@ -36,6 +36,8 @@ Download and run the installer for your operating system from the latest
 
 ### Windows
 
+Note: FFmpeg must be placed in `dist/ffmpeg.exe`
+
 Build the App:
 ```shell
 python -m pip install pyinstaller
@@ -50,6 +52,8 @@ iscc.exe install-win.iss
 
 ### Linux
 
+Note: FFmpeg must be placed in `dist/ffmpeg`
+
 ```shell
 python manifest.py
 bash install-linux.sh
@@ -61,8 +65,15 @@ bash install-linux.sh
 > The macOS installer uses [Packages](http://s.sudre.free.fr/Software/Packages/about.html) 
 > which must be manually installed.
 
+Build the App:
 ```shell
+python -m pip install pyinstaller
+pyinstaller --noconfirm client.spec
 python manifest.py
+```
+
+Create the Package:
+```shell
 bash install-mac.sh
 ```
 
