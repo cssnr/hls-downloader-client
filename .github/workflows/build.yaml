@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: "Build"
+      - name: "PyInstaller"
         run: |
           python -m pip install pyinstaller
           pyinstaller --noconfirm client.spec
@@ -43,7 +43,7 @@ jobs:
       - name: "Inno Setup"
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
         with:
-          path: install-win.iss
+          path: client.iss
           options: "/DMyAppVersion=${{ github.ref_name }}"
 
       - name: "Debug"
@@ -97,7 +97,7 @@ jobs:
       - name: "Debian Package"
         run: |
           python manifest.py
-          bash install-linux.sh
+          bash build-linux.sh
 
       - name: "Debug"
         run: |
@@ -140,12 +140,19 @@ jobs:
           sudo installer -pkg "/Volumes/Packages 1.2.10/Install Packages.pkg" -target /
           hdiutil detach "/Volumes/Packages 1.2.10"
 
-      - name: "Build"
+      - name: "Download FFmpeg"
+        run: |
+          mkdir -p dist
+          curl "https://evermeet.cx/ffmpeg/ffmpeg-6.1.1.zip" -o "dist/ffmpeg.zip"
+          unzip "dist/ffmpeg.zip" -d "dist"
+          ls dist
+
+      - name: "PyInstaller"
         run: |
           python -m pip install pyinstaller
           pyinstaller --noconfirm client.spec
           python manifest.py
-          bash install-mac.sh
+          bash build-mac.sh
 
       - name: "Debug"
         run: |
