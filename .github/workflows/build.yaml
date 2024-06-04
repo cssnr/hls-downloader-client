@@ -142,8 +142,6 @@ jobs:
 
       - name: "Build"
         run: |
-          python -m pip install pyinstaller
-          pyinstaller --noconfirm client.spec
           python manifest.py
           bash install-mac.sh
 
