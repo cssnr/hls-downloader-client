@@ -21,3 +21,5 @@ curl "${FFMPEG_ZIP}" -o "${DEST}/ffmpeg.zip"
 unzip "${DEST}/ffmpeg.zip" -d "${DEST}"
 
 packagesbuild hls-downloader-client.pkgproj
+mkdir out
+mv "${DEST}/hls-downloader-client.pkg" "out/install-macos.pkg"
