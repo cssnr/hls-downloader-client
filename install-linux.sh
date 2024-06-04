@@ -5,12 +5,12 @@ set -e
 PKG_NAME="hls-downloader-client"
 APP_NAME="org.cssnr.hls.downloader"
 SOURCE="dist"
+VERSION="0.0.1"
 
 if [ "${GITHUB_EVENT_NAME}" == "release" ];then
     VERSION="${GITHUB_REF_NAME}"
-else
-    VERSION="0.1"
 fi
+echo "Building version: ${VERSION}"
 
 PACKAGE="${PKG_NAME}_${VERSION}"
 
@@ -28,16 +28,16 @@ mkdir -p "${chrome}"
 mkdir -p "${chromium}"
 mkdir -p "${firefox}"
 
-cp "src/client.py" "${PACKAGE}/opt/${APP_NAME}/client.py"
+cp -f "src/client.py" "${PACKAGE}/opt/${APP_NAME}/client.py"
 chmod +x "${PACKAGE}/opt/${APP_NAME}/client.py"
-cp "dist/ffmpeg" "${PACKAGE}/opt/${APP_NAME}/ffmpeg"
+cp -f "dist/ffmpeg" "${PACKAGE}/opt/${APP_NAME}/ffmpeg"
 chmod +x "${PACKAGE}/opt/${APP_NAME}/ffmpeg"
 touch "${PACKAGE}/opt/${APP_NAME}/log.txt"
 chmod g+w "${PACKAGE}/opt/${APP_NAME}/log.txt"
 
-cp "${SOURCE}/manifest-chrome.json" "${chrome}/${APP_NAME}.json"
-cp "${SOURCE}/manifest-chrome.json" "${chromium}/${APP_NAME}.json"
-cp "${SOURCE}/manifest-firefox.json" "${firefox}/${APP_NAME}.json"
+cp -f "${SOURCE}/manifest-chrome.json" "${chrome}/${APP_NAME}.json"
+cp -f "${SOURCE}/manifest-chrome.json" "${chromium}/${APP_NAME}.json"
+cp -f "${SOURCE}/manifest-firefox.json" "${firefox}/${APP_NAME}.json"
 
 cat <<-EOF > "${PACKAGE}/DEBIAN/control"
 Package: ${PKG_NAME}

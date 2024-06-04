@@ -11,6 +11,9 @@ HLS Video Downloader Native Messaging Client for Windows, Linux and macOS.
 - Linux: [install-linux.deb](https://github.com/cssnr/hls-downloader-client/releases/latest/download/install-linux.deb)
 - macOS: [install-macos.pkg](https://github.com/cssnr/hls-downloader-client/releases/latest/download/install-macos.pkg)
 
+> [!NOTE]  
+> On macOS you need to Ctrl+Click or Right-Click the .pkg and then choose Open to install.
+
 Web Extension: https://github.com/cssnr/hls-video-downloader
 
 ## Browsers
@@ -35,6 +38,10 @@ Download and run the installer for your operating system from the latest
 ## Building
 
 ### Windows
+
+> [!NOTE]  
+> The Windows installer uses [Inno Setup](https://jrsoftware.org/isinfo.php)
+> which must be manually installed.
 
 Note: FFmpeg must be placed in `dist/ffmpeg.exe`
 

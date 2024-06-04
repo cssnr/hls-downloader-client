@@ -4,7 +4,7 @@
 #define MyAppExeName "client.exe"
 #define MyAppFolder "org.cssnr.hls.downloader"
 #ifndef MyAppVersion
-#define MyAppVersion "0.1"
+#define MyAppVersion "0.0.1"
 #endif
 
 [Setup]
