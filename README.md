@@ -36,6 +36,8 @@ Download and run the installer for your operating system from the latest
 
 ### Windows
 
+Note: FFmpeg must be placed in `dist/ffmpeg.exe`
+
 Build the App:
 ```shell
 python -m pip install pyinstaller
@@ -50,6 +52,8 @@ iscc.exe install-win.iss
 
 ### Linux
 
+Note: FFmpeg must be placed in `dist/ffmpeg`
+
 ```shell
 python manifest.py
 bash install-linux.sh
@@ -61,19 +65,27 @@ bash install-linux.sh
 > The macOS installer uses [Packages](http://s.sudre.free.fr/Software/Packages/about.html) 
 > which must be manually installed.
 
+Build the App:
 ```shell
+python -m pip install pyinstaller
+pyinstaller --noconfirm client.spec
 python manifest.py
+```
+
+Create the Package:
+```shell
 bash install-mac.sh
 ```
 
 ## More Info
 
-> [!NOTE]  
-> This information is for Linux/macOS. Windows uses a different approach with registry and packaged python.
+Windows requires corresponding registry entries for the manifest files (see location links below).
 
-Manifest files must be renamed to: `org.cssnr.hls.downloader.json`
+Windows and macOS requires packaging the app with `pyinstaller` to bundle python.
 
-Manifest key `path` must be set to the absolute path to the `client.py` location.
+Manifest files must be renamed to `org.cssnr.hls.downloader.json` on Linux and macOS.
+
+Manifest key `path` must be set to the absolute path to the `client` location.
 
 Manifest files must be placed in specific directories:
 
