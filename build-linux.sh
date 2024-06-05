@@ -46,8 +46,7 @@ Section: base
 Priority: optional
 Architecture: i386
 Maintainer: CSSNR
-Description:  CSSNR Python Native Messaging
- https://github.com/smashedr/python-native-messaging
+Description:  HLS Video Downloader Native Client
 EOF
 
 echo "Debian: ${PACKAGE}/DEBIAN/control"
