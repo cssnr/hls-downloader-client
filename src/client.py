@@ -6,7 +6,6 @@ import logging
 import platform
 import random
 import string
-# import shlex
 import shutil
 import struct
 import sys
@@ -49,9 +48,6 @@ def send_response(data, success=True):
 
 
 def download(url):
-    # logger.debug(f'sys.executable: {sys.executable}')
-    # logger.debug(f'cwd: {os.getcwd()}')
-    # logger.debug(f'listdir: {os.listdir(os.getcwd())}')
     logger.info(f'Downloading URL: {url}')
     name = os.path.basename(url)
     logger.debug(f'name: {name}')
@@ -77,8 +73,6 @@ def download(url):
     ffmpeg = shutil.which('ffmpeg')
     if not ffmpeg:
         ffmpeg = os.path.join(os.getcwd(), 'ffmpeg')
-    # command = f'{ffmpeg} -i {url} -c copy -bsf:a aac_adtstoasc {filename}'
-    # args = shlex.split(command)
     args = [ffmpeg, '-i', url, '-c', 'copy', '-bsf:a', 'aac_adtstoasc', filepath]
     logger.debug(f'args: {args}')
     ffmpeg_result = subprocess.run(args)
@@ -92,9 +86,7 @@ def open_explorer(file):
     if system == 'Windows':
         open_result = subprocess.run(f'explorer /select,"{file}"')
     elif system == 'Linux':
-        dir_name = os.path.dirname(file)
-        logger.debug(f'dir_name: {dir_name}')
-        open_result = subprocess.run(['xdg-open', dir_name])
+        open_result = subprocess.run(['xdg-open', os.path.dirname(file)])
     elif system == 'Darwin':
         open_result = subprocess.run(['open', '-R', file])
     else:
