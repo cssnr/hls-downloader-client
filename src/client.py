@@ -82,16 +82,16 @@ def download(url):
 
 
 def open_explorer(file):
-    logger.debug(f"Opening File: {file}")
+    logger.debug(f'Opening File: {file}')
     system = platform.system()
     if system == 'Windows':
-        open_result = subprocess.run(f"explorer /select,\"{file}\"")
+        open_result = subprocess.run(f'explorer /select,"{file}"')
     elif system == 'Linux':
         dir_name = os.path.dirname(file)
         logger.debug(f'dir_name: {dir_name}')
-        open_result = subprocess.run(f'xdg-open "{dir_name}"')
+        open_result = subprocess.run(['xdg-open', dir_name])
     elif system == 'Darwin':
-        open_result = subprocess.call(["open", "-R", file])
+        open_result = subprocess.run(['open', '-R', file])
     else:
         logger.info(f'Unsupported System: {system}')
         return
