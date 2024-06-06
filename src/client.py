@@ -80,7 +80,7 @@ def download(url):
     return filepath
 
 
-def open_explorer(file):
+def open_folder(file):
     logger.debug(f'Opening File: {file}')
     system = platform.system()
     if system == 'Windows':
@@ -108,7 +108,7 @@ try:
         logger.debug('----- download: END')
         send_response(response)
     elif 'open' in message:
-        open_explorer(message['open'])
+        open_folder(message['open'])
         send_response({'message': 'opened'})
     else:
         send_response({'message': 'Host Client Working.'})
