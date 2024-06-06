@@ -11,11 +11,15 @@ import shutil
 import struct
 import sys
 import subprocess
+from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
 logging.basicConfig(
-    filename='log.txt',
-    filemode='a',
+    handlers=[RotatingFileHandler(
+        filename='log.txt',
+        maxBytes=1_000_000,
+        backupCount=2,
+    )],
     format='%(asctime)s %(name)s %(levelname)s - %(message)s',
     level=logging.getLevelName('DEBUG'),
     datefmt='%Y-%m-%d %H:%M:%S',
@@ -75,7 +79,6 @@ def download(url):
     # args = shlex.split(command)
     args = [ffmpeg, '-i', url, '-c', 'copy', '-bsf:a', 'aac_adtstoasc', filepath]
     logger.debug(f'args: {args}')
-    # TODO: Add Error Handling
     ffmpeg_result = subprocess.run(args)
     logger.debug(f'ffmpeg_result: {ffmpeg_result}')
     return filepath
@@ -103,7 +106,6 @@ try:
     logger.debug(f'message: {message}')
     if 'download' in message:
         logger.debug('----- download: BEGIN')
-        # TODO: Add Error Handling
         path = download(message['download'])
         response = {
             'message': 'Download Finished.',
