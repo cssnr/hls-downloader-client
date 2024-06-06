@@ -3,18 +3,22 @@
 import json
 import os
 import logging
+import platform
 import random
 import string
-# import shlex
 import shutil
 import struct
 import sys
 import subprocess
+from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
 logging.basicConfig(
-    filename='log.txt',
-    filemode='a',
+    handlers=[RotatingFileHandler(
+        filename='log.txt',
+        maxBytes=1_000_000,
+        backupCount=2,
+    )],
     format='%(asctime)s %(name)s %(levelname)s - %(message)s',
     level=logging.getLevelName('DEBUG'),
     datefmt='%Y-%m-%d %H:%M:%S',
@@ -44,16 +48,13 @@ def send_response(data, success=True):
 
 
 def download(url):
-    # logger.debug(f'sys.executable: {sys.executable}')
-    # logger.debug(f'cwd: {os.getcwd()}')
-    # logger.debug(f'listdir: {os.listdir(os.getcwd())}')
-    logger.debug(f'download url: {url}')
+    logger.info(f'Downloading URL: {url}')
     name = os.path.basename(url)
     logger.debug(f'name: {name}')
 
     directory = os.path.join(Path.home(), 'Downloads')
     if not os.path.exists(directory):
-        logger.debug(f'make dir: {directory}')
+        logger.info(f'Created Downloads Directory: {directory}')
         os.makedirs(directory)
 
     filename, _ = os.path.splitext(name)
@@ -68,15 +69,30 @@ def download(url):
         filepath = os.path.join(directory, fullname)
         logger.debug(f'filepath: {filepath}')
 
-    ffmpeg = shutil.which('ffmpeg.exe')
-    # command = f'{ffmpeg} -i {url} -c copy -bsf:a aac_adtstoasc {filename}'
-    # args = shlex.split(command)
+    logger.info(f'Destination File Path: {filepath}')
+    ffmpeg = shutil.which('ffmpeg')
+    if not ffmpeg:
+        ffmpeg = os.path.join(os.getcwd(), 'ffmpeg')
     args = [ffmpeg, '-i', url, '-c', 'copy', '-bsf:a', 'aac_adtstoasc', filepath]
     logger.debug(f'args: {args}')
-    # TODO: Add Error Handling
     ffmpeg_result = subprocess.run(args)
     logger.debug(f'ffmpeg_result: {ffmpeg_result}')
     return filepath
+
+
+def open_folder(file):
+    logger.debug(f'Opening File: {file}')
+    system = platform.system()
+    if system == 'Windows':
+        open_result = subprocess.run(f'explorer /select,"{file}"')
+    elif system == 'Linux':
+        open_result = subprocess.run(['xdg-open', os.path.dirname(file)])
+    elif system == 'Darwin':
+        open_result = subprocess.run(['open', '-R', file])
+    else:
+        logger.info(f'Unsupported System: {system}')
+        return
+    logger.debug(f'open_result: {open_result}')
 
 
 try:
@@ -84,7 +100,6 @@ try:
     logger.debug(f'message: {message}')
     if 'download' in message:
         logger.debug('----- download: BEGIN')
-        # TODO: Add Error Handling
         path = download(message['download'])
         response = {
             'message': 'Download Finished.',
@@ -93,9 +108,7 @@ try:
         logger.debug('----- download: END')
         send_response(response)
     elif 'open' in message:
-        logger.debug(f"open: {message['open']}")
-        open_result = subprocess.run(f"explorer /select,\"{message['open']}\"")
-        logger.debug(f'open_result: {open_result}')
+        open_folder(message['open'])
         send_response({'message': 'opened'})
     else:
         send_response({'message': 'Host Client Working.'})
