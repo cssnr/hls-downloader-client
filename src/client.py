@@ -75,6 +75,8 @@ def download(url):
 
     logger.info(f'Destination File Path: {filepath}')
     ffmpeg = shutil.which('ffmpeg')
+    if not ffmpeg:
+        ffmpeg = os.path.join(os.getcwd(), 'ffmpeg')
     # command = f'{ffmpeg} -i {url} -c copy -bsf:a aac_adtstoasc {filename}'
     # args = shlex.split(command)
     args = [ffmpeg, '-i', url, '-c', 'copy', '-bsf:a', 'aac_adtstoasc', filepath]
