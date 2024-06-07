@@ -236,17 +236,34 @@
 										<array>
 											<dict>
 												<key>CHILDREN</key>
-												<array/>
+												<array>
+													<dict>
+														<key>CHILDREN</key>
+														<array/>
+														<key>GID</key>
+														<integer>0</integer>
+														<key>PATH</key>
+														<string>dist/chrome/org.cssnr.hls.downloader.json</string>
+														<key>PATH_TYPE</key>
+														<integer>1</integer>
+														<key>PERMISSIONS</key>
+														<integer>420</integer>
+														<key>TYPE</key>
+														<integer>3</integer>
+														<key>UID</key>
+														<integer>0</integer>
+													</dict>
+												</array>
 												<key>GID</key>
 												<integer>0</integer>
 												<key>PATH</key>
-												<string>dist/chrome/org.cssnr.hls.downloader.json</string>
+												<string>NativeMessagingHosts</string>
 												<key>PATH_TYPE</key>
-												<integer>1</integer>
+												<integer>2</integer>
 												<key>PERMISSIONS</key>
-												<integer>420</integer>
+												<integer>509</integer>
 												<key>TYPE</key>
-												<integer>3</integer>
+												<integer>2</integer>
 												<key>UID</key>
 												<integer>0</integer>
 											</dict>
@@ -254,7 +271,7 @@
 										<key>GID</key>
 										<integer>0</integer>
 										<key>PATH</key>
-										<string>NativeMessagingHosts</string>
+										<string>Chrome</string>
 										<key>PATH_TYPE</key>
 										<integer>2</integer>
 										<key>PERMISSIONS</key>
