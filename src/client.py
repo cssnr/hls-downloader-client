@@ -17,7 +17,7 @@ logging.basicConfig(
     handlers=[RotatingFileHandler(
         filename='log.txt',
         maxBytes=1_000_000,
-        backupCount=2,
+        backupCount=1,
     )],
     format='%(asctime)s %(name)s %(levelname)s - %(message)s',
     level=logging.getLevelName('DEBUG'),
@@ -40,6 +40,7 @@ def read_message():
 def send_response(data, success=True):
     data['success'] = success
     text = json.dumps(data)
+    logger.debug(f'response: {text}')
     length = struct.pack('@I', len(text))
     msg = {'length': length, 'content': text}
     sys.stdout.buffer.write(msg['length'])
@@ -58,7 +59,25 @@ def run(args):
     return result
 
 
+def open_folder(file):
+    logger.debug(f'Opening File: {file}')
+    system = platform.system()
+    if system == 'Windows':
+        result = run(f'explorer /select,"{file}"')
+    elif system == 'Linux':
+        result = run(['xdg-open', os.path.dirname(file)])
+    elif system == 'Darwin':
+        result = run(['open', '-R', file])
+    else:
+        logger.info(f'Unsupported System: {system}')
+        send_response({'message': 'Unable to open on this system.'}, False)
+        return
+    logger.debug(f'returncode: {result.returncode}')
+    send_response({'message': 'opened'})
+
+
 def download(message):
+    logger.debug('----- download: BEGIN')
     url = message['download']
     logger.info(f'Downloading URL: {url}')
     name = os.path.basename(url)
@@ -92,25 +111,16 @@ def download(message):
     logger.debug(f'args: {args}')
     result = run(args)
     logger.debug(f'returncode: {result.returncode}')
-    return filepath
+    response = {
+        'message': 'Download Finished.',
+        'path': filepath,
+    }
+    logger.debug('----- download: END')
+    send_response(response)
 
 
-def open_folder(file):
-    logger.debug(f'Opening File: {file}')
-    system = platform.system()
-    if system == 'Windows':
-        result = run(f'explorer /select,"{file}"')
-    elif system == 'Linux':
-        result = run(['xdg-open', os.path.dirname(file)])
-    elif system == 'Darwin':
-        result = run(['open', '-R', file])
-    else:
-        logger.info(f'Unsupported System: {system}')
-        return
-    logger.debug(f'returncode: {result.returncode}')
-
-
-def youtube(url):
+def youtube(message):
+    url = message['youtube']
     logger.info(f'Downloading YouTube: {url}')
     directory = os.path.join(Path.home(), 'Downloads')
     if not os.path.exists(directory):
@@ -126,39 +136,31 @@ def youtube(url):
     stdout = result.stdout.decode('utf-8').split('\n')
     logger.debug(f'++returncode: {result.returncode}')
     logger.debug(f'--stdout: {stdout}')
+    dest = None
     for out in reversed(stdout):
         if out.startswith('[Merger] Merging formats into '):
             dest = out.replace('[Merger] Merging formats into ', '', 1)
-            return dest.strip('"')
         if out.startswith('[download] ') and out.endswith(' has already been downloaded'):
             dest = out.replace('[download] ', '').replace(' has already been downloaded', '')
-            return dest.strip('"')
-    return directory
+
+    if dest:
+        send_response({
+            'message': 'Download Finished.',
+            'path': dest.strip('"'),
+        })
+    else:
+        send_response({'message': 'Error Processing Download.'}, False)
 
 
 try:
     message = read_message()
     logger.debug(f'message: {message}')
     if 'download' in message:
-        logger.debug('----- download: BEGIN')
-        path = download(message)
-        response = {
-            'message': 'Download Finished.',
-            'path': path,
-        }
-        logger.debug('----- download: END')
-        send_response(response)
+        download(message)
     elif 'open' in message:
         open_folder(message['open'])
-        send_response({'message': 'opened'})
     if 'youtube' in message:
-        path = youtube(message['youtube'])
-        response = {
-            'message': 'Download Finished.',
-            'path': path,
-        }
-        logger.debug(f'response: {response}')
-        send_response(response)
+        youtube(message)
     else:
         send_response({'message': 'Host Client Working.'})
 
