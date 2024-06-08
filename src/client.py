@@ -47,7 +47,19 @@ def send_response(data, success=True):
     sys.stdout.flush()
 
 
-def download(url):
+def run(args):
+    result = subprocess.run(
+        args,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    if result.returncode != 0:
+        logger.debug(f'Error: {result.stderr}')
+    return result
+
+
+def download(message):
+    url = message['download']
     logger.info(f'Downloading URL: {url}')
     name = os.path.basename(url)
     logger.debug(f'name: {name}')
@@ -73,10 +85,13 @@ def download(url):
     ffmpeg = shutil.which('ffmpeg')
     if not ffmpeg:
         ffmpeg = os.path.join(os.getcwd(), 'ffmpeg')
-    args = [ffmpeg, '-i', url, '-c', 'copy', '-bsf:a', 'aac_adtstoasc', filepath]
+    args = [ffmpeg, '-i', url]
+    if 'extra' in message and message['extra']:
+        args.extend(['-i', message['extra']])
+    args.extend(['-c', 'copy', '-bsf:a', 'aac_adtstoasc', filepath])
     logger.debug(f'args: {args}')
-    ffmpeg_result = subprocess.run(args)
-    logger.debug(f'ffmpeg_result: {ffmpeg_result}')
+    result = run(args)
+    logger.debug(f'returncode: {result.returncode}')
     return filepath
 
 
@@ -84,15 +99,41 @@ def open_folder(file):
     logger.debug(f'Opening File: {file}')
     system = platform.system()
     if system == 'Windows':
-        open_result = subprocess.run(f'explorer /select,"{file}"')
+        result = run(f'explorer /select,"{file}"')
     elif system == 'Linux':
-        open_result = subprocess.run(['xdg-open', os.path.dirname(file)])
+        result = run(['xdg-open', os.path.dirname(file)])
     elif system == 'Darwin':
-        open_result = subprocess.run(['open', '-R', file])
+        result = run(['open', '-R', file])
     else:
         logger.info(f'Unsupported System: {system}')
         return
-    logger.debug(f'open_result: {open_result}')
+    logger.debug(f'returncode: {result.returncode}')
+
+
+def youtube(url):
+    logger.info(f'Downloading YouTube: {url}')
+    directory = os.path.join(Path.home(), 'Downloads')
+    if not os.path.exists(directory):
+        logger.info(f'Created Downloads Directory: {directory}')
+        os.makedirs(directory)
+    ytdlp = shutil.which('yt-dlp')
+    logger.debug(f'ytdlp: {ytdlp}')
+
+    logger.info(f'Destination Directory: {directory}')
+    args = [ytdlp, '-P', directory, url]
+    logger.debug(f'args: {args}')
+    result = run(args)
+    stdout = result.stdout.decode('utf-8').split('\n')
+    logger.debug(f'++returncode: {result.returncode}')
+    logger.debug(f'--stdout: {stdout}')
+    for out in reversed(stdout):
+        if out.startswith('[Merger] Merging formats into '):
+            dest = out.replace('[Merger] Merging formats into ', '', 1)
+            return dest.strip('"')
+        if out.startswith('[download] ') and out.endswith(' has already been downloaded'):
+            dest = out.replace('[download] ', '').replace(' has already been downloaded', '')
+            return dest.strip('"')
+    return directory
 
 
 try:
@@ -100,7 +141,7 @@ try:
     logger.debug(f'message: {message}')
     if 'download' in message:
         logger.debug('----- download: BEGIN')
-        path = download(message['download'])
+        path = download(message)
         response = {
             'message': 'Download Finished.',
             'path': path,
@@ -110,6 +151,14 @@ try:
     elif 'open' in message:
         open_folder(message['open'])
         send_response({'message': 'opened'})
+    if 'youtube' in message:
+        path = youtube(message['youtube'])
+        response = {
+            'message': 'Download Finished.',
+            'path': path,
+        }
+        logger.debug(f'response: {response}')
+        send_response(response)
     else:
         send_response({'message': 'Host Client Working.'})
 
