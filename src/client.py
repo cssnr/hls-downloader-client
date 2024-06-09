@@ -159,7 +159,7 @@ try:
         download(message)
     elif 'open' in message:
         open_folder(message['open'])
-    if 'youtube' in message:
+    elif 'youtube' in message:
         youtube(message)
     else:
         send_response({'message': 'Host Client Working.'})
