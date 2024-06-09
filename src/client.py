@@ -126,11 +126,11 @@ def ytdlp(message):
     if not os.path.exists(directory):
         logger.info(f'Created Downloads Directory: {directory}')
         os.makedirs(directory)
-    ytdlp = shutil.which('yt-dlp')
-    logger.debug(f'ytdlp: {ytdlp}')
+    yt_dlp = shutil.which('yt-dlp')
+    logger.debug(f'yt_dlp: {yt_dlp}')
 
     logger.info(f'Destination Directory: {directory}')
-    args = [ytdlp, '-P', directory, url]
+    args = [yt_dlp, '-P', directory, url]
     logger.debug(f'args: {args}')
     result = run(args)
     stdout = result.stdout.decode('utf-8').split('\n')
