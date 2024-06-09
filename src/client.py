@@ -119,9 +119,9 @@ def download(message):
     send_response(response)
 
 
-def youtube(message):
-    url = message['youtube']
-    logger.info(f'Downloading YouTube: {url}')
+def ytdlp(message):
+    url = message['ytdlp']
+    logger.info(f'Downloading yt-dlp: {url}')
     directory = os.path.join(Path.home(), 'Downloads')
     if not os.path.exists(directory):
         logger.info(f'Created Downloads Directory: {directory}')
@@ -159,8 +159,8 @@ try:
         download(message)
     elif 'open' in message:
         open_folder(message['open'])
-    elif 'youtube' in message:
-        youtube(message)
+    elif 'ytdlp' in message:
+        ytdlp(message)
     else:
         send_response({'message': 'Host Client Working.'})
 
