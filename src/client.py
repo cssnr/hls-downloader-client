@@ -135,7 +135,7 @@ def ytdlp(message):
     result = run(args)
     stdout = result.stdout.decode('utf-8').split('\n')
     logger.debug(f'++returncode: {result.returncode}')
-    logger.debug(f'--stdout: {stdout}')
+    # logger.debug(f'--stdout: {stdout}')
     dest = None
     for out in reversed(stdout):
         if out.startswith('[Merger] Merging formats into '):
