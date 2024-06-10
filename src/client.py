@@ -17,7 +17,7 @@ logging.basicConfig(
     handlers=[RotatingFileHandler(
         filename='log.txt',
         maxBytes=1_000_000,
-        backupCount=2,
+        backupCount=1,
     )],
     format='%(asctime)s %(name)s %(levelname)s - %(message)s',
     level=logging.getLevelName('DEBUG'),
@@ -40,6 +40,7 @@ def read_message():
 def send_response(data, success=True):
     data['success'] = success
     text = json.dumps(data)
+    logger.debug(f'response: {text}')
     length = struct.pack('@I', len(text))
     msg = {'length': length, 'content': text}
     sys.stdout.buffer.write(msg['length'])
@@ -47,7 +48,37 @@ def send_response(data, success=True):
     sys.stdout.flush()
 
 
-def download(url):
+def run(args):
+    result = subprocess.run(
+        args,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    if result.returncode != 0:
+        logger.debug(f'Error: {result.stderr}')
+    return result
+
+
+def open_folder(file):
+    logger.debug(f'Opening File: {file}')
+    system = platform.system()
+    if system == 'Windows':
+        result = run(f'explorer /select,"{file}"')
+    elif system == 'Linux':
+        result = run(['xdg-open', os.path.dirname(file)])
+    elif system == 'Darwin':
+        result = run(['open', '-R', file])
+    else:
+        logger.info(f'Unsupported System: {system}')
+        send_response({'message': 'Unable to open on this system.'}, False)
+        return
+    logger.debug(f'returncode: {result.returncode}')
+    send_response({'message': 'opened'})
+
+
+def download(message):
+    logger.debug('----- download: BEGIN')
+    url = message['download']
     logger.info(f'Downloading URL: {url}')
     name = os.path.basename(url)
     logger.debug(f'name: {name}')
@@ -73,43 +104,63 @@ def download(url):
     ffmpeg = shutil.which('ffmpeg')
     if not ffmpeg:
         ffmpeg = os.path.join(os.getcwd(), 'ffmpeg')
-    args = [ffmpeg, '-i', url, '-c', 'copy', '-bsf:a', 'aac_adtstoasc', filepath]
+    args = [ffmpeg, '-i', url]
+    if 'extra' in message and message['extra']:
+        args.extend(['-i', message['extra']])
+    args.extend(['-c', 'copy', '-bsf:a', 'aac_adtstoasc', filepath])
     logger.debug(f'args: {args}')
-    ffmpeg_result = subprocess.run(args)
-    logger.debug(f'ffmpeg_result: {ffmpeg_result}')
-    return filepath
+    result = run(args)
+    logger.debug(f'returncode: {result.returncode}')
+    response = {
+        'message': 'Download Finished.',
+        'path': filepath,
+    }
+    logger.debug('----- download: END')
+    send_response(response)
 
 
-def open_folder(file):
-    logger.debug(f'Opening File: {file}')
-    system = platform.system()
-    if system == 'Windows':
-        open_result = subprocess.run(f'explorer /select,"{file}"')
-    elif system == 'Linux':
-        open_result = subprocess.run(['xdg-open', os.path.dirname(file)])
-    elif system == 'Darwin':
-        open_result = subprocess.run(['open', '-R', file])
+def ytdlp(message):
+    url = message['ytdlp']
+    logger.info(f'Downloading yt-dlp: {url}')
+    directory = os.path.join(Path.home(), 'Downloads')
+    if not os.path.exists(directory):
+        logger.info(f'Created Downloads Directory: {directory}')
+        os.makedirs(directory)
+    yt_dlp = shutil.which('yt-dlp')
+    logger.debug(f'yt_dlp: {yt_dlp}')
+
+    logger.info(f'Destination Directory: {directory}')
+    args = [yt_dlp, '-P', directory, url]
+    logger.debug(f'args: {args}')
+    result = run(args)
+    stdout = result.stdout.decode('utf-8').split('\n')
+    logger.debug(f'++returncode: {result.returncode}')
+    # logger.debug(f'--stdout: {stdout}')
+    dest = None
+    for out in reversed(stdout):
+        if out.startswith('[Merger] Merging formats into '):
+            dest = out.replace('[Merger] Merging formats into ', '', 1)
+        if out.startswith('[download] ') and out.endswith(' has already been downloaded'):
+            dest = out.replace('[download] ', '').replace(' has already been downloaded', '')
+
+    if dest:
+        send_response({
+            'message': 'Download Finished.',
+            'path': dest.strip('"'),
+        })
     else:
-        logger.info(f'Unsupported System: {system}')
-        return
-    logger.debug(f'open_result: {open_result}')
+        send_response({'message': 'Error Processing Download.'}, False)
 
 
 try:
     message = read_message()
     logger.debug(f'message: {message}')
     if 'download' in message:
-        logger.debug('----- download: BEGIN')
-        path = download(message['download'])
-        response = {
-            'message': 'Download Finished.',
-            'path': path,
-        }
-        logger.debug('----- download: END')
-        send_response(response)
+        download(message)
     elif 'open' in message:
         open_folder(message['open'])
-        send_response({'message': 'opened'})
+    elif 'ytdlp' in message:
+        ytdlp(message)
     else:
         send_response({'message': 'Host Client Working.'})
 
