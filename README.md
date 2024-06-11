@@ -65,7 +65,7 @@ iscc.exe client.iss
 Note: FFmpeg must be placed in `dist/ffmpeg`
 
 ```shell
-python -m pip install -r requirements.txt
+#python -m pip install -r requirements.txt
 python manifest.py
 bash build-linux.sh
 ```
