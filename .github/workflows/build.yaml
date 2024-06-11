@@ -42,7 +42,7 @@ jobs:
 
       - name: "Write Version"
         run: |
-          echo "${GITHUB_REF_NAME}" >> src/version.txt
+          echo "${GITHUB_REF_NAME}" > src/version.txt
 
       - name: "Inno Setup"
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
@@ -104,7 +104,7 @@ jobs:
 
       - name: "Write Version"
         run: |
-          echo "${GITHUB_REF_NAME}" >> src/version.txt
+          echo "${GITHUB_REF_NAME}" > src/version.txt
 
       - name: "Debian Package"
         run: |
@@ -161,7 +161,7 @@ jobs:
 
       - name: "Write Version"
         run: |
-          echo "${GITHUB_REF_NAME}" >> src/version.txt
+          echo "${GITHUB_REF_NAME}" > src/version.txt
 
       - name: "PyInstaller"
         run: |

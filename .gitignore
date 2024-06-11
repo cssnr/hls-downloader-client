@@ -8,4 +8,3 @@ dist/
 out/
 .coverage
 **/ffmpeg.exe
-**/version.txt
