@@ -41,9 +41,6 @@ Source: "dist\manifest-chrome.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "dist\manifest-firefox.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "dist\ffmpeg.exe"; DestDir: "{app}"; Flags: ignoreversion
 
-[Icons]
-Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-
 [Registry]
 Root: HKCU; Subkey: "Software\Google\Chrome\NativeMessagingHosts\{#MyAppFolder}"; ValueType: string; ValueData: "{app}\manifest-chrome.json"; Flags: uninsdeletekey
 Root: HKCU; Subkey: "Software\Chromium\NativeMessagingHosts\{#MyAppFolder}"; ValueType: string; ValueData: "{app}\manifest-chrome.json"; Flags: uninsdeletekey
