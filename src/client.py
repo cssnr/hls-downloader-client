@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import httpx
 import json
 import os
 import logging
@@ -12,6 +13,10 @@ import sys
 import subprocess
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
+from packaging import version
+from typing import Any, Dict, List, Union
+
+update_url = 'https://github.com/cssnr/hls-downloader-client/releases/latest'
 
 logging.basicConfig(
     handlers=[RotatingFileHandler(
@@ -27,7 +32,7 @@ logging.basicConfig(
 logger = logging.getLogger('client')
 
 
-def read_message():
+def read_message() -> Dict[str, Any]:
     length = sys.stdin.buffer.read(4)
     if len(length) == 0:
         logger.warning('Message length is 0')
@@ -37,10 +42,10 @@ def read_message():
     return json.loads(data)
 
 
-def send_response(data, success=True):
+def send_response(data: Dict[str, Any], success: bool = True) -> None:
     data['success'] = success
     text = json.dumps(data)
-    logger.debug(f'response: {text}')
+    logger.debug('response: %s', text)
     length = struct.pack('@I', len(text))
     msg = {'length': length, 'content': text}
     sys.stdout.buffer.write(msg['length'])
@@ -48,59 +53,98 @@ def send_response(data, success=True):
     sys.stdout.flush()
 
 
-def run(args):
+def run(args: Union[List[str], str]) -> subprocess.CompletedProcess:
     result = subprocess.run(
         args,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
     if result.returncode != 0:
-        logger.debug(f'Error: {result.stderr}')
+        logger.error('Error: %s', result.stderr)
+    logger.debug('result.returncode: %s', result.returncode)
     return result
 
 
-def open_folder(file):
-    logger.debug(f'Opening File: {file}')
+def version_check() -> None:
+    """
+    TODO: Consider checking/comparing versions client side
+    """
+    logger.debug('version_check')
+    with open('version.txt', 'r') as file:
+        current_version = file.read().strip()
+    app_version = version.parse(current_version)
+    logger.debug('app_version: %s', app_version)
+    r = httpx.head(update_url, timeout=10)
+    if r.status_code != 302:
+        logger.error('Error: Version Check URL Response did not return a 302.')
+        return send_response({
+            'message': 'Error Checking for Updates.',
+        }, False)
+
+    logger.debug('location: %s', r.headers['location'])
+    latest_version = version.parse(os.path.basename(r.headers['location']))
+    logger.debug('latest_version: %s', latest_version)
+
+    if latest_version > app_version:
+        logger.info('New Version Available: %s', latest_version)
+        send_response({
+            'message': f'New Version Available: {latest_version}',
+            'current': app_version,
+            'latest': latest_version,
+        })
+    else:
+        logger.info('No Update Available: %s', latest_version)
+        send_response({
+            'message': 'No Updates Available',
+            'current': app_version,
+            'latest': latest_version,
+        })
+
+
+def open_folder(file: str) -> None:
+    """
+    TODO: Add Function to Handle run Errors
+    """
+    logger.debug('Opening File: %s', file)
     system = platform.system()
     if system == 'Windows':
-        result = run(f'explorer /select,"{file}"')
+        run(f'explorer /select,"{file}"')
     elif system == 'Linux':
-        result = run(['xdg-open', os.path.dirname(file)])
+        run(['xdg-open', os.path.dirname(file)])
     elif system == 'Darwin':
-        result = run(['open', '-R', file])
+        run(['open', '-R', file])
     else:
-        logger.info(f'Unsupported System: {system}')
-        send_response({'message': 'Unable to open on this system.'}, False)
-        return
-    logger.debug(f'returncode: {result.returncode}')
+        logger.warning('Unsupported System: %s', system)
+        return send_response({'message': 'Unable to open on this system.'}, False)
+
     send_response({'message': 'opened'})
 
 
-def download(message):
+def download(message: Dict[str, Any]) -> None:
     logger.debug('----- download: BEGIN')
     url = message['download']
-    logger.info(f'Downloading URL: {url}')
+    logger.info('Downloading URL: %s', url)
     name = os.path.basename(url)
-    logger.debug(f'name: {name}')
+    logger.debug('name: %s', name)
 
     directory = os.path.join(Path.home(), 'Downloads')
     if not os.path.exists(directory):
-        logger.info(f'Created Downloads Directory: {directory}')
+        logger.info('Created Downloads Directory: %s', directory)
         os.makedirs(directory)
 
     filename, _ = os.path.splitext(name)
     fullname = filename + '.mp4'
     filepath = os.path.join(directory, fullname)
-    logger.debug(f'filepath: {filepath}')
+    logger.debug('filepath: %s', filepath)
     if os.path.exists(filepath):
         logger.debug('filepath exists, adding random')
         rand = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
-        logger.debug(f'rand: {rand}')
+        logger.debug('rand: %s', rand)
         fullname = filename + '_' + rand + '.mp4'
         filepath = os.path.join(directory, fullname)
-        logger.debug(f'filepath: {filepath}')
+        logger.debug('filepath: %s', filepath)
 
-    logger.info(f'Destination File Path: {filepath}')
+    logger.info('Destination File Path: %s', filepath)
     ffmpeg = shutil.which('ffmpeg')
     if not ffmpeg:
         ffmpeg = os.path.join(os.getcwd(), 'ffmpeg')
@@ -108,9 +152,8 @@ def download(message):
     if 'extra' in message and message['extra']:
         args.extend(['-i', message['extra']])
     args.extend(['-c', 'copy', '-bsf:a', 'aac_adtstoasc', filepath])
-    logger.debug(f'args: {args}')
+    logger.debug('args: %s', args)
     result = run(args)
-    logger.debug(f'returncode: {result.returncode}')
     logger.debug('----- download: END')
     if result.returncode != 0:
         send_response({
@@ -123,23 +166,26 @@ def download(message):
         })
 
 
-def ytdlp(message):
+def ytdlp(message: Dict[str, Any]) -> None:
     url = message['ytdlp']
-    logger.info(f'Downloading yt-dlp: {url}')
+    logger.info('Downloading yt-dlp: %s', url)
     directory = os.path.join(Path.home(), 'Downloads')
     if not os.path.exists(directory):
-        logger.info(f'Created Downloads Directory: {directory}')
+        logger.info('Created Downloads Directory: %s', directory)
         os.makedirs(directory)
     yt_dlp = shutil.which('yt-dlp')
-    logger.debug(f'yt_dlp: {yt_dlp}')
+    logger.debug('yt_dlp: %s', yt_dlp)
 
-    logger.info(f'Destination Directory: {directory}')
+    logger.info('Destination Directory: %s', directory)
     args = [yt_dlp, '-P', directory, url]
-    logger.debug(f'args: {args}')
+    logger.debug('args: %s', args)
     result = run(args)
+    if result.returncode != 0:
+        return send_response({
+            'message': result.stderr.decode().splitlines()[-1],
+        }, False)
+
     stdout = result.stdout.decode('utf-8').split('\n')
-    logger.debug(f'++returncode: {result.returncode}')
-    # logger.debug(f'--stdout: {stdout}')
     dest = None
     for out in reversed(stdout):
         if out.startswith('[Merger] Merging formats into '):
@@ -158,11 +204,13 @@ def ytdlp(message):
 
 try:
     message = read_message()
-    logger.debug(f'message: {message}')
-    if 'download' in message:
-        download(message)
+    logger.debug('message: %s', message)
+    if 'version' in message:
+        version_check()
     elif 'open' in message:
         open_folder(message['open'])
+    elif 'download' in message:
+        download(message)
     elif 'ytdlp' in message:
         ytdlp(message)
     else:
