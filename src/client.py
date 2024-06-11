@@ -111,12 +111,16 @@ def download(message):
     logger.debug(f'args: {args}')
     result = run(args)
     logger.debug(f'returncode: {result.returncode}')
-    response = {
-        'message': 'Download Finished.',
-        'path': filepath,
-    }
     logger.debug('----- download: END')
-    send_response(response)
+    if result.returncode != 0:
+        send_response({
+            'message': result.stderr.decode().splitlines()[-1],
+        }, False)
+    else:
+        send_response({
+            'message': 'Download Finished.',
+            'path': filepath,
+        })
 
 
 def ytdlp(message):
