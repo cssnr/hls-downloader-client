@@ -43,7 +43,10 @@ jobs:
       - name: "Write Version"
         if: ${{ github.event_name == 'release' }}
         run: |
-          echo $env:GITHUB_REF_NAME > src\version.txt
+          Write-Output "GITHUB_REF_NAME: $env:GITHUB_REF_NAME"
+          Get-Content src/version.txt
+          $env:GITHUB_REF_NAME | Set-Content src\version.txt
+          Get-Content src/version.txt
 
       - name: "Inno Setup"
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
@@ -53,8 +56,6 @@ jobs:
 
       - name: "Debug"
         run: |
-          echo GITHUB_REF_NAME: $env:GITHUB_REF_NAME
-          cat src/version.txt
           ls -R
 
       - name: "Upload to Actions"
@@ -104,7 +105,10 @@ jobs:
       - name: "Write Version"
         if: ${{ github.event_name == 'release' }}
         run: |
-          echo $GITHUB_REF_NAME > src\version.txt
+          echo GITHUB_REF_NAME: "$GITHUB_REF_NAME"
+          cat src/version.txt
+          echo "$GITHUB_REF_NAME" > src/version.txt
+          cat src/version.txt
 
       - name: "Debian Package"
         run: |
@@ -113,8 +117,6 @@ jobs:
 
       - name: "Debug"
         run: |
-          echo GITHUB_REF_NAME: $GITHUB_REF_NAME
-          cat src/version.txt
           ls -R
 
       - name: "Upload to Actions"
@@ -164,7 +166,10 @@ jobs:
       - name: "Write Version"
         if: ${{ github.event_name == 'release' }}
         run: |
-          echo $GITHUB_REF_NAME > src\version.txt
+          echo GITHUB_REF_NAME: "$GITHUB_REF_NAME"
+          cat src/version.txt
+          echo "$GITHUB_REF_NAME" > src/version.txt
+          cat src/version.txt
 
       - name: "PyInstaller"
         run: |
@@ -175,8 +180,6 @@ jobs:
 
       - name: "Debug"
         run: |
-          echo GITHUB_REF_NAME: $GITHUB_REF_NAME
-          cat src/version.txt
           ls -R
 
       - name: "Upload to Actions"
