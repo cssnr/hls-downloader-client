@@ -104,7 +104,7 @@ jobs:
       - name: "Write Version"
         if: ${{ github.event_name == 'release' }}
         run: |
-          echo ${{ env.GITHUB_REF_NAME }} > src\version.txt
+          echo $GITHUB_REF_NAME > src\version.txt
 
       - name: "Debian Package"
         run: |
@@ -113,7 +113,7 @@ jobs:
 
       - name: "Debug"
         run: |
-          echo GITHUB_REF_NAME: ${{ env.GITHUB_REF_NAME }}
+          echo GITHUB_REF_NAME: $GITHUB_REF_NAME
           cat src/version.txt
           ls -R
 
@@ -164,7 +164,7 @@ jobs:
       - name: "Write Version"
         if: ${{ github.event_name == 'release' }}
         run: |
-          echo ${{ env.GITHUB_REF_NAME }} > src\version.txt
+          echo $GITHUB_REF_NAME > src\version.txt
 
       - name: "PyInstaller"
         run: |
@@ -175,7 +175,7 @@ jobs:
 
       - name: "Debug"
         run: |
-          echo GITHUB_REF_NAME: ${{ env.GITHUB_REF_NAME }}
+          echo GITHUB_REF_NAME: $GITHUB_REF_NAME
           cat src/version.txt
           ls -R
 
