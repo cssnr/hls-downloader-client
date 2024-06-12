@@ -41,6 +41,7 @@ jobs:
           ls dist
 
       - name: "Write Version"
+        if: ${{ github.event_name == 'release' }}
         run: |
           echo "${GITHUB_REF_NAME}" > src/version.txt
 
@@ -52,6 +53,7 @@ jobs:
 
       - name: "Debug"
         run: |
+          echo "GITHUB_REF_NAME: ${GITHUB_REF_NAME}"
           ls -R out
 
       - name: "Upload to Actions"
@@ -99,6 +101,7 @@ jobs:
           ls dist
 
       - name: "Write Version"
+        if: ${{ github.event_name == 'release' }}
         run: |
           echo "${GITHUB_REF_NAME}" > src/version.txt
 
@@ -109,6 +112,7 @@ jobs:
 
       - name: "Debug"
         run: |
+          echo "GITHUB_REF_NAME: ${GITHUB_REF_NAME}"
           ls -R
 
       - name: "Upload to Actions"
@@ -156,6 +160,7 @@ jobs:
           ls dist
 
       - name: "Write Version"
+        if: ${{ github.event_name == 'release' }}
         run: |
           echo "${GITHUB_REF_NAME}" > src/version.txt
 
@@ -168,6 +173,7 @@ jobs:
 
       - name: "Debug"
         run: |
+          echo "GITHUB_REF_NAME: ${GITHUB_REF_NAME}"
           ls -R
 
       - name: "Upload to Actions"
