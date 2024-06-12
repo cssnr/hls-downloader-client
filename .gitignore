@@ -7,4 +7,5 @@ build/
 dist/
 out/
 .coverage
+**/.DS_Store
 **/ffmpeg.exe

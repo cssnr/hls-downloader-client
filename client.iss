@@ -40,6 +40,7 @@ Source: "dist\client\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "dist\manifest-chrome.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "dist\manifest-firefox.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "dist\ffmpeg.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "src\version.txt"; DestDir: "{app}"; Flags: ignoreversion
 
 [Registry]
 Root: HKCU; Subkey: "Software\Google\Chrome\NativeMessagingHosts\{#MyAppFolder}"; ValueType: string; ValueData: "{app}\manifest-chrome.json"; Flags: uninsdeletekey
@@ -50,3 +51,4 @@ Root: HKCU; Subkey: "Software\Waterfox\NativeMessagingHosts\{#MyAppFolder}"; Val
 
 [UninstallDelete]
 Type: files; Name: "{app}\log.txt"
+Type: files; Name: "{app}\log.txt.1"

@@ -32,6 +32,7 @@ cp -f "src/client.py" "${PACKAGE}/opt/${APP_NAME}/client.py"
 chmod +x "${PACKAGE}/opt/${APP_NAME}/client.py"
 cp -f "dist/ffmpeg" "${PACKAGE}/opt/${APP_NAME}/ffmpeg"
 chmod +x "${PACKAGE}/opt/${APP_NAME}/ffmpeg"
+cp -f "src/version.txt" "${PACKAGE}/opt/${APP_NAME}/version.txt"
 touch "${PACKAGE}/opt/${APP_NAME}/log.txt"
 chmod g+w "${PACKAGE}/opt/${APP_NAME}/log.txt"
 
