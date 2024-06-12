@@ -3,6 +3,7 @@
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/hls-downloader-client?logo=github)](https://github.com/cssnr/hls-downloader-client/releases/latest)
 [![Build](https://github.com/cssnr/hls-downloader-client/actions/workflows/build.yaml/badge.svg)](https://github.com/cssnr/hls-downloader-client/actions/workflows/build.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_hls-downloader-client&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_hls-downloader-client)
+
 # HLS Video Downloader Client
 
 HLS Video Downloader Native Messaging Client for Windows, Linux and macOS.
@@ -32,7 +33,7 @@ Tested and working in the following browsers:
 
 ## Installing
 
-Download and run the installer for your operating system from the latest 
+Download and run the installer for your operating system from the latest
 [release](https://github.com/cssnr/hls-downloader-client/releases/latest).
 
 ## Building
@@ -46,13 +47,15 @@ Download and run the installer for your operating system from the latest
 Note: FFmpeg must be placed in `dist/ffmpeg.exe`
 
 Build the App:
+
 ```shell
-python -m pip install pyinstaller
+python -m pip install -r requirements.txt
 pyinstaller --noconfirm client.spec
 python manifest.py
 ```
 
 Create the Installer:
+
 ```shell
 iscc.exe client.iss
 ```
@@ -62,6 +65,7 @@ iscc.exe client.iss
 Note: FFmpeg must be placed in `dist/ffmpeg`
 
 ```shell
+#python -m pip install -r requirements.txt
 python manifest.py
 bash build-linux.sh
 ```
@@ -69,19 +73,21 @@ bash build-linux.sh
 ### MacOS
 
 > [!NOTE]  
-> The macOS installer uses [Packages](http://s.sudre.free.fr/Software/Packages/about.html) 
+> The macOS installer uses [Packages](http://s.sudre.free.fr/Software/Packages/about.html)
 > which must be manually installed.
 
 Note: FFmpeg must be placed in `dist/ffmpeg`
 
 Build the App:
+
 ```shell
-python -m pip install pyinstaller
+python -m pip install -r requirements.txt
 pyinstaller --noconfirm client.spec
 python manifest.py
 ```
 
 Create the Package:
+
 ```shell
 bash build-mac.sh
 ```
