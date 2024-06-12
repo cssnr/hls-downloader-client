@@ -43,7 +43,7 @@ jobs:
       - name: "Write Version"
         if: ${{ github.event_name == 'release' }}
         run: |
-          echo ${{ env.GITHUB_REF_NAME }} > src\version.txt
+          echo $env:GITHUB_REF_NAME > src\version.txt
 
       - name: "Inno Setup"
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
@@ -53,7 +53,7 @@ jobs:
 
       - name: "Debug"
         run: |
-          echo GITHUB_REF_NAME: ${{ env.GITHUB_REF_NAME }}
+          echo GITHUB_REF_NAME: $env:GITHUB_REF_NAME
           cat src/version.txt
           ls -R
 
