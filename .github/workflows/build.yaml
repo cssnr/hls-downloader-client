@@ -42,10 +42,8 @@ jobs:
 
       - name: "Write Version"
         if: ${{ github.event_name == 'release' }}
-        env:
-          TAG_NAME: ${{ github.event.release.tag_name }}
         run: |
-          echo ${TAG_NAME} > src/version.txt
+          echo ${{ env.GITHUB_REF_NAME }} > src\version.txt
 
       - name: "Inno Setup"
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
@@ -54,13 +52,10 @@ jobs:
           options: "/DMyAppVersion=${{ github.ref_name }}"
 
       - name: "Debug"
-        env:
-          TAG_NAME: ${{ github.event.release.tag_name }}
         run: |
-          echo TAG_NAME: ${TAG_NAME}
-          echo GITHUB_REF_NAME: ${GITHUB_REF_NAME}
-          echo GITHUB_REF_NAME: $GITHUB_REF_NAME
-          ls -R out
+          echo GITHUB_REF_NAME: ${{ env.GITHUB_REF_NAME }}
+          cat src/version.txt
+          ls -R
 
       - name: "Upload to Actions"
         uses: actions/upload-artifact@v4
@@ -108,10 +103,8 @@ jobs:
 
       - name: "Write Version"
         if: ${{ github.event_name == 'release' }}
-        env:
-          TAG_NAME: ${{ github.event.release.tag_name }}
         run: |
-          echo ${TAG_NAME} > src/version.txt
+          echo ${{ env.GITHUB_REF_NAME }} > src\version.txt
 
       - name: "Debian Package"
         run: |
@@ -119,12 +112,9 @@ jobs:
           bash build-linux.sh
 
       - name: "Debug"
-        env:
-          TAG_NAME: ${{ github.event.release.tag_name }}
         run: |
-          echo TAG_NAME: ${TAG_NAME}
-          echo GITHUB_REF_NAME: ${GITHUB_REF_NAME}
-          echo GITHUB_REF_NAME: $GITHUB_REF_NAME
+          echo GITHUB_REF_NAME: ${{ env.GITHUB_REF_NAME }}
+          cat src/version.txt
           ls -R
 
       - name: "Upload to Actions"
@@ -173,10 +163,8 @@ jobs:
 
       - name: "Write Version"
         if: ${{ github.event_name == 'release' }}
-        env:
-          TAG_NAME: ${{ github.event.release.tag_name }}
         run: |
-          echo ${TAG_NAME} > src/version.txt
+          echo ${{ env.GITHUB_REF_NAME }} > src\version.txt
 
       - name: "PyInstaller"
         run: |
@@ -186,12 +174,9 @@ jobs:
           bash build-mac.sh
 
       - name: "Debug"
-        env:
-          TAG_NAME: ${{ github.event.release.tag_name }}
         run: |
-          echo TAG_NAME: ${TAG_NAME}
-          echo GITHUB_REF_NAME: ${GITHUB_REF_NAME}
-          echo GITHUB_REF_NAME: $GITHUB_REF_NAME
+          echo GITHUB_REF_NAME: ${{ env.GITHUB_REF_NAME }}
+          cat src/version.txt
           ls -R
 
       - name: "Upload to Actions"
