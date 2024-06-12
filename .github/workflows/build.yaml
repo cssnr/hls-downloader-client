@@ -42,8 +42,10 @@ jobs:
 
       - name: "Write Version"
         if: ${{ github.event_name == 'release' }}
+        env:
+          TAG_NAME: ${{ github.event.release.tag_name }}
         run: |
-          echo "${GITHUB_REF_NAME}" > src/version.txt
+          echo ${TAG_NAME} > src/version.txt
 
       - name: "Inno Setup"
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
@@ -52,8 +54,12 @@ jobs:
           options: "/DMyAppVersion=${{ github.ref_name }}"
 
       - name: "Debug"
+        env:
+          TAG_NAME: ${{ github.event.release.tag_name }}
         run: |
-          echo "GITHUB_REF_NAME: ${GITHUB_REF_NAME}"
+          echo TAG_NAME: ${TAG_NAME}
+          echo GITHUB_REF_NAME: ${GITHUB_REF_NAME}
+          echo GITHUB_REF_NAME: $GITHUB_REF_NAME
           ls -R out
 
       - name: "Upload to Actions"
@@ -102,8 +108,10 @@ jobs:
 
       - name: "Write Version"
         if: ${{ github.event_name == 'release' }}
+        env:
+          TAG_NAME: ${{ github.event.release.tag_name }}
         run: |
-          echo "${GITHUB_REF_NAME}" > src/version.txt
+          echo ${TAG_NAME} > src/version.txt
 
       - name: "Debian Package"
         run: |
@@ -111,8 +119,12 @@ jobs:
           bash build-linux.sh
 
       - name: "Debug"
+        env:
+          TAG_NAME: ${{ github.event.release.tag_name }}
         run: |
-          echo "GITHUB_REF_NAME: ${GITHUB_REF_NAME}"
+          echo TAG_NAME: ${TAG_NAME}
+          echo GITHUB_REF_NAME: ${GITHUB_REF_NAME}
+          echo GITHUB_REF_NAME: $GITHUB_REF_NAME
           ls -R
 
       - name: "Upload to Actions"
@@ -161,8 +173,10 @@ jobs:
 
       - name: "Write Version"
         if: ${{ github.event_name == 'release' }}
+        env:
+          TAG_NAME: ${{ github.event.release.tag_name }}
         run: |
-          echo "${GITHUB_REF_NAME}" > src/version.txt
+          echo ${TAG_NAME} > src/version.txt
 
       - name: "PyInstaller"
         run: |
@@ -172,8 +186,12 @@ jobs:
           bash build-mac.sh
 
       - name: "Debug"
+        env:
+          TAG_NAME: ${{ github.event.release.tag_name }}
         run: |
-          echo "GITHUB_REF_NAME: ${GITHUB_REF_NAME}"
+          echo TAG_NAME: ${TAG_NAME}
+          echo GITHUB_REF_NAME: ${GITHUB_REF_NAME}
+          echo GITHUB_REF_NAME: $GITHUB_REF_NAME
           ls -R
 
       - name: "Upload to Actions"
