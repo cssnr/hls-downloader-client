@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-# import httpx
 import json
 import os
 import logging
@@ -13,10 +12,7 @@ import sys
 import subprocess
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
-# from packaging import version
 from typing import Any, Dict, List, Union
-
-# update_url = 'https://github.com/cssnr/hls-downloader-client/releases/latest'
 
 logging.basicConfig(
     handlers=[RotatingFileHandler(
@@ -66,48 +62,15 @@ def run(args: Union[List[str], str]) -> subprocess.CompletedProcess:
 
 
 def version_check() -> None:
-    """
-    TODO: Consider checking/comparing versions client side
-    """
     logger.debug('version_check')
     with open('version.txt', 'r') as file:
         current_version = file.read().strip()
     send_response({
         'current_version': current_version,
     })
-    # app_version = version.parse(current_version)
-    # logger.debug('app_version: %s', app_version)
-    # r = httpx.head(update_url, timeout=10)
-    # if r.status_code != 302:
-    #     logger.error('Error: Version Check URL Response did not return a 302.')
-    #     return send_response({
-    #         'message': 'Error Checking for Updates.',
-    #     }, False)
-    #
-    # logger.debug('location: %s', r.headers['location'])
-    # latest_version = version.parse(os.path.basename(r.headers['location']))
-    # logger.debug('latest_version: %s', latest_version)
-    #
-    # if latest_version > app_version:
-    #     logger.info('New Version Available: %s', latest_version)
-    #     send_response({
-    #         'message': f'New Version Available: {latest_version}',
-    #         'current': app_version,
-    #         'latest': latest_version,
-    #     })
-    # else:
-    #     logger.info('No Update Available: %s', latest_version)
-    #     send_response({
-    #         'message': 'No Updates Available',
-    #         'current': app_version,
-    #         'latest': latest_version,
-    #     })
 
 
 def open_folder(file: str) -> None:
-    """
-    TODO: Add Function to Handle run Errors
-    """
     logger.debug('Opening File: %s', file)
     system = platform.system()
     if system == 'Windows':
@@ -202,7 +165,7 @@ def ytdlp(message: Dict[str, Any]) -> None:
             'path': dest.strip('"'),
         })
     else:
-        send_response({'message': 'Error Processing Download.'}, False)
+        send_response({'message': 'Unable to Parse Output File.'}, False)
 
 
 try:
