@@ -13,6 +13,7 @@ import subprocess
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from typing import Any, Dict, List, Union
+from urllib.parse import urlparse
 
 logging.basicConfig(
     handlers=[RotatingFileHandler(
@@ -90,7 +91,8 @@ def download(message: Dict[str, Any]) -> None:
     logger.debug('----- download: BEGIN')
     url = message['download']
     logger.info('Downloading URL: %s', url)
-    name = os.path.basename(url)
+    parsed = urlparse(url)
+    name = os.path.basename(parsed.path)
     logger.debug('name: %s', name)
 
     directory = os.path.join(Path.home(), 'Downloads')
