@@ -56,9 +56,9 @@ def run(args: Union[List[str], str]) -> subprocess.CompletedProcess:
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
+    logger.debug('result.returncode: %s', result.returncode)
     if result.returncode != 0:
         logger.error('Error: %s', result.stderr)
-    logger.debug('result.returncode: %s', result.returncode)
     return result
 
 
@@ -101,14 +101,16 @@ def download(message: Dict[str, Any]) -> None:
         os.makedirs(directory)
 
     filename, _ = os.path.splitext(name)
-    fullname = filename + '.mp4'
+    title = message.get('title', filename)
+    title = title.translate(str.maketrans('', '', '\\/:*?"<>|'))
+    fullname = title + '.mp4'
     filepath = os.path.join(directory, fullname)
     logger.debug('filepath: %s', filepath)
     if os.path.exists(filepath):
         logger.debug('filepath exists, adding random')
         rand = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
         logger.debug('rand: %s', rand)
-        fullname = filename + '_' + rand + '.mp4'
+        fullname = title + '_' + rand + '.mp4'
         filepath = os.path.join(directory, fullname)
         logger.debug('filepath: %s', filepath)
 
