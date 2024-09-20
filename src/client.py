@@ -102,8 +102,7 @@ def download(message: Dict[str, Any]) -> None:
 
     filename, _ = os.path.splitext(name)
     title = message.get('title', filename)
-    trans = str.maketrans('', '', '\\/:*?"<>|')
-    title = title.translate(trans)
+    title = title.translate(str.maketrans('', '', '\\/:*?"<>|'))
     fullname = title + '.mp4'
     filepath = os.path.join(directory, fullname)
     logger.debug('filepath: %s', filepath)
