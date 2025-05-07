@@ -3,6 +3,7 @@ import os
 import platform
 from typing import Dict, List, Union
 
+
 # Configuration
 
 data: Dict[str, Union[str, List[str]]] = {
