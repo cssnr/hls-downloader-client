@@ -1,11 +1,11 @@
 .idea/
 *.iml
 .vscode/
+**/.DS_Store
 **/__pycache__/
 venv/
 build/
 dist/
 out/
 .coverage
-**/.DS_Store
 **/ffmpeg.exe
