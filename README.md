@@ -8,9 +8,9 @@
 
 HLS Video Downloader Native Messaging Client for Windows, Linux and macOS.
 
--   Windows: [install-win.exe](https://github.com/cssnr/hls-downloader-client/releases/latest/download/install-win.exe)
--   Linux: [install-linux.deb](https://github.com/cssnr/hls-downloader-client/releases/latest/download/install-linux.deb)
--   macOS: [install-macos.pkg](https://github.com/cssnr/hls-downloader-client/releases/latest/download/install-macos.pkg)
+- Windows: [install-win.exe](https://github.com/cssnr/hls-downloader-client/releases/latest/download/install-win.exe)
+- Linux: [install-linux.deb](https://github.com/cssnr/hls-downloader-client/releases/latest/download/install-linux.deb)
+- macOS: [install-macos.pkg](https://github.com/cssnr/hls-downloader-client/releases/latest/download/install-macos.pkg)
 
 > [!NOTE]  
 > On macOS you need to Ctrl+Click or Right-Click the .pkg and then choose Open to install.
@@ -21,15 +21,15 @@ This is the client for this Web Extension: https://github.com/cssnr/hls-video-do
 
 Tested and working in the following browsers:
 
--   Firefox
--   Waterfox
--   Edge
--   Chrome
--   Chromium
--   Brave
--   Opera
--   Vivaldi
--   Ghost
+- Firefox
+- Waterfox
+- Edge
+- Chrome
+- Chromium
+- Brave
+- Opera
+- Vivaldi
+- Ghost
 
 ## Installing
 
@@ -129,8 +129,8 @@ Manifest key `path` must be set to the absolute path to the `client` location.
 
 Manifest files must be placed in specific directories:
 
--   Firefox: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_manifests#manifest_location
--   Chrome: https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging#native-messaging-host-location
+- Firefox: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_manifests#manifest_location
+- Chrome: https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging#native-messaging-host-location
 
 The `client` location must be writable by the user and a writable `log.txt`
 must be present in that location due to the current logging configuration in the [client.py](src/client.py).
