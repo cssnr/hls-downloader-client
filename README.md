@@ -1,12 +1,23 @@
 [![GitHub Downloads](https://img.shields.io/github/downloads/cssnr/hls-downloader-client/total?logo=github)](https://github.com/cssnr/hls-downloader-client/releases/latest)
 [![GitHub Release](https://img.shields.io/github/v/release/cssnr/hls-downloader-client?logo=github)](https://github.com/cssnr/hls-downloader-client/releases/latest)
+[![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/hls-downloader-client?style=flat&logo=github)](https://github.com/cssnr/hls-downloader-client/stargazers)
 [![Workflow Build](https://img.shields.io/github/actions/workflow/status/cssnr/hls-downloader-client/build.yaml?logo=github&label=build)](https://github.com/cssnr/hls-downloader-client/actions/workflows/build.yaml)
 [![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/hls-downloader-client/lint.yaml?logo=github&label=lint)](https://github.com/cssnr/hls-downloader-client/actions/workflows/lint.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_hls-downloader-client&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_hls-downloader-client)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/hls-downloader-client?logo=github&logoColor=white&label=updated)](https://github.com/cssnr/hls-downloader-client/graphs/commit-activity)
+[![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/hls-downloader-client?logo=htmx&logoColor=white)](https://github.com/cssnr/hls-downloader-client)
+[![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/hls-downloader-client?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/hls-downloader-client)
+[![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&logoColor=white)](https://cssnr.github.io/)
+[![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
+[![Support](https://img.shields.io/badge/Ko--fi-579fbf?logo=kofi&label=Support)](https://ko-fi.com/cssnr)
 
 # HLS Video Downloader Client
 
 HLS Video Downloader Native Messaging Client for Windows, Linux and macOS.
+
+[![Chrome](https://raw.githubusercontent.com/smashedr/repo-images/refs/heads/master/os/windows48.png)](https://github.com/cssnr/hls-downloader-client/releases/latest/download/install-win.exe)
+[![Firefox](https://raw.githubusercontent.com/smashedr/repo-images/refs/heads/master/os/linux48.png)](https://github.com/cssnr/hls-downloader-client/releases/latest/download/install-linux.deb)
+[![Edge](https://raw.githubusercontent.com/smashedr/repo-images/refs/heads/master/os/macos48.png)](https://github.com/cssnr/hls-downloader-client/releases/latest/download/install-macos.pkg)
 
 - Windows: [install-win.exe](https://github.com/cssnr/hls-downloader-client/releases/latest/download/install-win.exe)
 - Linux: [install-linux.deb](https://github.com/cssnr/hls-downloader-client/releases/latest/download/install-linux.deb)
@@ -136,3 +147,12 @@ The `client` location must be writable by the user and a writable `log.txt`
 must be present in that location due to the current logging configuration in the [client.py](src/client.py).
 
 The `client.py` must be executable by the user with Python installed and working.
+
+# Contributing
+
+Please consider making a donation to support the development of this project
+and [additional](https://cssnr.com/) open source projects.
+
+[![Support](https://img.shields.io/badge/Ko--fi-579fbf?style=for-the-badge&logo=kofi&label=Support)](https://ko-fi.com/cssnr)
+
+For a full list of current projects visit: [https://cssnr.github.io/](https://cssnr.github.io/)
