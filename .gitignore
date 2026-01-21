@@ -1,11 +1,16 @@
+# Generic
 .idea/
 *.iml
 .vscode/
-**/.DS_Store
-**/__pycache__/
+.venv/
 venv/
+__pycache__/
+*.egg-info/
 build/
 dist/
-out/
+.*cache
+*.log
+*.pyc
 .coverage
-**/ffmpeg.exe
+coverage.xml
+*.txt

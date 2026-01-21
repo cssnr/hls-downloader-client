@@ -5,6 +5,9 @@ on:
   release:
     types: [published]
 
+env:
+  ffmpeg-version: 8.0.1
+
 jobs:
   windows:
     name: "Windows"
@@ -22,7 +25,8 @@ jobs:
 
       - name: "PyInstaller"
         run: |
-          python -m pip install -r requirements.txt
+          python -m pip install -U pip
+          python -m pip install --group build
           pyinstaller --noconfirm client.spec
           python manifest.py
 
@@ -81,10 +85,10 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: "Setup Python"
-        uses: actions/setup-python@v5
+      - name: "Setup Python 3.10"
+        uses: actions/setup-python@v6
         with:
           python-version: "3.10"
 
@@ -116,24 +120,22 @@ jobs:
           bash build-linux.sh
 
       - name: "Debug"
+        continue-on-error: true
         run: |
           ls -R
 
       - name: "Upload to Actions"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: install-linux
           path: out
 
-      - name: "Upload to Release"
-        uses: svenstaro/upload-release-action@v2
+      - name: "Upload Release"
         if: ${{ github.event_name == 'release' }}
+        uses: cssnr/upload-release-action@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: out/*
-          tag: ${{ github.ref }}
+          globs: out/*
           overwrite: true
-          file_glob: true
 
   macos:
     name: "macOS"
@@ -142,10 +144,10 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: "Setup Python"
-        uses: actions/setup-python@v5
+      - name: "Setup Python 3.10"
+        uses: actions/setup-python@v6
         with:
           python-version: "3.10"
 
@@ -159,7 +161,7 @@ jobs:
       - name: "Download FFmpeg"
         run: |
           mkdir -p dist
-          curl "https://evermeet.cx/ffmpeg/ffmpeg-6.1.1.zip" -o "dist/ffmpeg.zip"
+          curl "https://evermeet.cx/ffmpeg/ffmpeg-${{ env.ffmpeg-version }}.zip" -o "dist/ffmpeg.zip"
           unzip "dist/ffmpeg.zip" -d "dist"
           ls dist
 
@@ -173,30 +175,29 @@ jobs:
 
       - name: "PyInstaller"
         run: |
-          python -m pip install -r requirements.txt
+          python -m pip install -U pip
+          python -m pip install --group build
           pyinstaller --noconfirm client.spec
           python manifest.py
           bash build-mac.sh
 
       - name: "Debug"
+        continue-on-error: true
         run: |
           ls -R
 
       - name: "Upload to Actions"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: install-macos
           path: out
 
-      - name: "Upload to Release"
-        uses: svenstaro/upload-release-action@v2
+      - name: "Upload Release"
         if: ${{ github.event_name == 'release' }}
+        uses: cssnr/upload-release-action@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: out/*
-          tag: ${{ github.ref }}
+          globs: out/*
           overwrite: true
-          file_glob: true
 
   virustotal:
     name: "VirusTotal Scan"

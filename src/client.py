@@ -4,7 +4,7 @@ import json
 import logging
 import os
 import platform
-import random
+import secrets
 import shutil
 import string
 import struct
@@ -14,7 +14,6 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from typing import Any, Dict, List, Union
 from urllib.parse import urlparse
-
 
 logging.basicConfig(
     handlers=[
@@ -113,7 +112,7 @@ def download(message: Dict[str, Any]) -> None:
     logger.debug("filepath: %s", filepath)
     if os.path.exists(filepath):
         logger.debug("filepath exists, adding random")
-        rand = "".join(random.choices(string.ascii_uppercase + string.digits, k=4))
+        rand = "".join(secrets.choice(string.ascii_letters) for _ in range(4))
         logger.debug("rand: %s", rand)
         fullname = title + "_" + rand + ".mp4"
         filepath = os.path.join(directory, fullname)
@@ -153,7 +152,7 @@ def ytdlp(message: Dict[str, Any]) -> None:
     if not os.path.exists(directory):
         logger.info("Created Downloads Directory: %s", directory)
         os.makedirs(directory)
-    yt_dlp = shutil.which("yt-dlp")
+    yt_dlp = shutil.which("yt-dlp") or "yt-dlp"
     logger.debug("yt_dlp: %s", yt_dlp)
 
     logger.info("Destination Directory: %s", directory)

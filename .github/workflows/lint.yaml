@@ -16,83 +16,90 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      #- name: "Debug event.json"
-      #  if: ${{ always() && !cancelled() }}
-      #  run: |
-      #    cat "${GITHUB_EVENT_PATH}"
+      - name: "Debug event.json"
+        if: ${{ !github.event.act }}
+        continue-on-error: true
+        run: cat "${GITHUB_EVENT_PATH}"
+      - name: "Debug CTX github"
+        if: ${{ !github.event.act }}
+        continue-on-error: true
+        env:
+          GITHUB_CTX: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CTX"
+      - name: "Debug Environment"
+        if: ${{ !github.event.act }}
+        continue-on-error: true
+        run: env
 
-      - name: "Setup Python 3.13"
-        uses: actions/setup-python@v5
+      - name: "Setup Python 3.10"
+        uses: actions/setup-python@v6
         with:
-          python-version: "3.13"
-          cache: "pip"
+          python-version: "3.10"
 
       - name: "Install"
         id: install
         run: |
           python -m pip install -U pip
-          python -m pip install -Ur requirements-dev.txt
+          python -m pip install --group dev
 
-      - name: "Flake8"
-        if: ${{ always() && !cancelled() }}
-        run: |
-          flake8 --max-line-length 119 --extend-exclude ".github" .
-
-      - name: "Ruff"
-        if: ${{ always() && !cancelled() }}
-        uses: astral-sh/ruff-action@v3
+      - name: "astral-sh/ruff"
+        if: ${{ !cancelled() }}
+        uses: astral-sh/ruff-action@57714a7c8a2e59f32539362ba31877a1957dded1 # v3.5.1
         with:
           version: latest
 
-      - name: "Black"
-        if: ${{ always() && !cancelled() }}
+      - name: "astral-sh/ty"
+        continue-on-error: true
+        if: ${{ !cancelled() }}
+        run: |
+          ty check -v
+
+      - name: "psf/black"
+        if: ${{ !cancelled() }}
         uses: psf/black@stable
 
-      - name: "Isort"
-        if: ${{ always() && !cancelled() }}
-        uses: isort/isort-action@v1
+      - name: "isort"
+        if: ${{ !cancelled() }}
+        uses: isort/isort-action@24d8a7a51d33ca7f36c3f23598dafa33f7071326 # v1.1.1
 
-      - name: "Mypy"
-        if: ${{ always() && !cancelled() }}
+      - name: "mypy"
+        if: ${{ !cancelled() }}
         run: |
-          mypy src
+          toml-run mypy
 
-      #- name: "Hadolint"
-      #  if: ${{ always() && !cancelled() }}
-      #  uses: hadolint/hadolint-action@v3.1.0
+      - name: "bandit"
+        if: ${{ !cancelled() }}
+        run: |
+          toml-run bandit
 
-      - name: "Prettier"
-        if: ${{ always() && !cancelled() }}
+      - name: "tombi"
+        if: ${{ !cancelled() }}
+        run: |
+          tombi lint
+
+      - name: "yamllint"
+        if: ${{ !cancelled() }}
+        run: |
+          toml-run yamllint
+
+      - name: "prettier"
+        if: ${{ !cancelled() }}
         run: |
           echo "::group::Install"
           npm install prettier
           echo "::endgroup::"
           npx prettier --check .
 
-      - name: "Yamllint"
-        if: ${{ always() && !cancelled() }}
-        env:
-          CONFIG: "{extends: relaxed, ignore: [node_modules/], rules: {line-length: {max: 119}}}"
-        run: |
-          echo "::group::List Files"
-          yamllint -d '${{ env.CONFIG }}' --list-files .
-          echo "::endgroup::"
-          yamllint -d '${{ env.CONFIG }}' .
-
-      - name: "Actionlint"
+      - name: "actionlint"
         if: ${{ !cancelled() }}
-        run: |
-          echo "::group::Download"
-          loc=$(curl -sI https://github.com/rhysd/actionlint/releases/latest | grep -i '^location:')
-          echo "loc: ${loc}"
-          tag=$(echo "${loc}" | sed -E 's|.*/tag/v?(.*)|\1|' | tr -d '\t\r\n')
-          echo "tag: ${tag}"
-          url="https://github.com/rhysd/actionlint/releases/latest/download/actionlint_${tag}_linux_amd64.tar.gz"
-          echo "url: ${url}"
-          curl -sL "${url}" | tar xz -C "${RUNNER_TEMP}" actionlint
-          file "${RUNNER_TEMP}/actionlint"
-          "${RUNNER_TEMP}/actionlint" --version
-          echo "::endgroup::"
-          "${RUNNER_TEMP}/actionlint" -color -verbose -shellcheck= -pyflakes=
+        uses: cssnr/actionlint-action@v1
+        with:
+          shellcheck_opts: -e SC2012
+
+      - name: "ShellCheck"
+        if: ${{ !cancelled() }}
+        uses: ludeeus/action-shellcheck@master
+        env:
+          SHELLCHECK_OPTS: -x
