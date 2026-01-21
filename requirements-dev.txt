@@ -1,8 +1,0 @@
-# Development
-
-black
-flake8
-isort
-mypy
-ruff
-yamllint

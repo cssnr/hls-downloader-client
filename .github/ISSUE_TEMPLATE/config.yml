@@ -1,0 +1,13 @@
+blank_issues_enabled: true
+contact_links:
+  - name: "❔ Start a Discussion"
+    about: Ask a general question or start a discussion
+    url: https://github.com/cssnr/hls-downloader-client/discussions/new?category=q-a
+
+  - name: "💬 Join Discord"
+    about: Chat with us about anything
+    url: https://discord.gg/wXy6m2X8wY
+
+  - name: "🌐 Web Extension"
+    about: Get the Web Extension
+    url: https://github.com/cssnr/hls-video-downloader

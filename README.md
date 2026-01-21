@@ -1,17 +1,26 @@
 [![GitHub Downloads](https://img.shields.io/github/downloads/cssnr/hls-downloader-client/total?logo=github)](https://github.com/cssnr/hls-downloader-client/releases/latest)
 [![GitHub Release](https://img.shields.io/github/v/release/cssnr/hls-downloader-client?logo=github)](https://github.com/cssnr/hls-downloader-client/releases/latest)
-[![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/hls-downloader-client?style=flat&logo=github)](https://github.com/cssnr/hls-downloader-client/stargazers)
-[![Workflow Build](https://img.shields.io/github/actions/workflow/status/cssnr/hls-downloader-client/build.yaml?logo=github&label=build)](https://github.com/cssnr/hls-downloader-client/actions/workflows/build.yaml)
-[![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/hls-downloader-client/lint.yaml?logo=github&label=lint)](https://github.com/cssnr/hls-downloader-client/actions/workflows/lint.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_hls-downloader-client&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_hls-downloader-client)
-[![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/hls-downloader-client?logo=github&logoColor=white&label=updated)](https://github.com/cssnr/hls-downloader-client/graphs/commit-activity)
-[![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/hls-downloader-client?logo=htmx&logoColor=white)](https://github.com/cssnr/hls-downloader-client)
-[![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/hls-downloader-client?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/hls-downloader-client)
-[![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&logoColor=white)](https://cssnr.github.io/)
+[![Workflow Build](https://img.shields.io/github/actions/workflow/status/cssnr/hls-downloader-client/build.yaml?logo=testcafe&logoColor=white&label=build)](https://github.com/cssnr/hls-downloader-client/actions/workflows/build.yaml)
+[![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/hls-downloader-client/lint.yaml?logo=testcafe&logoColor=white&label=lint)](https://github.com/cssnr/hls-downloader-client/actions/workflows/lint.yaml)
+[![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/hls-downloader-client?logo=buffer&label=repo%20size)](https://github.com/cssnr/hls-downloader-client?tab=readme-ov-file#readme)
+[![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/hls-downloader-client?logo=devbox)](https://github.com/cssnr/hls-downloader-client?tab=readme-ov-file#readme)
+[![GitHub Contributors](https://img.shields.io/github/contributors-anon/cssnr/hls-downloader-client?logo=southwestairlines)](https://github.com/cssnr/hls-downloader-client/graphs/contributors)
+[![GitHub Issues](https://img.shields.io/github/issues/cssnr/hls-downloader-client?logo=codeforces&logoColor=white)](https://github.com/cssnr/hls-downloader-client/issues)
+[![GitHub Discussions](https://img.shields.io/github/discussions/cssnr/hls-downloader-client?logo=theconversation)](https://github.com/cssnr/hls-downloader-client/discussions)
+[![GitHub Forks](https://img.shields.io/github/forks/cssnr/hls-downloader-client?style=flat&logo=forgejo&logoColor=white)](https://github.com/cssnr/hls-downloader-client/forks)
+[![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/hls-downloader-client?style=flat&logo=gleam&logoColor=white)](https://github.com/cssnr/hls-downloader-client/stargazers)
+[![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=apachespark&logoColor=white&label=org%20stars)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
-[![Support](https://img.shields.io/badge/Ko--fi-579fbf?logo=kofi&label=Support)](https://ko-fi.com/cssnr)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-72a5f2?logo=kofi&label=support)](https://ko-fi.com/cssnr)
 
 # HLS Video Downloader Client
+
+- [Browsers](#Browsers)
+- [Installing](#Installing)
+- [Building](#Building)
+- [Support](#Support)
+- [Contributing](#Contributing)
 
 HLS Video Downloader Native Messaging Client for Windows, Linux and macOS.
 
@@ -50,7 +59,7 @@ Download and run the installer for your operating system from the latest
 ## Running From Source
 
 This can be run directly from the `client.py` source file. To do this, all the configuration must be in place and
-Python installed. You can either run the installer first or manually configure the app (see [More Info](#More-Info)).
+Python installed. You can either run the installer first or manually configure the app (see [Additional Info](#additional-information)).
 
 Then, place the [client.bat](assets/client.bat) (Windows) or the [client.sh](assets/client.sh)
 (Linux/macOS) into the installation directory and update it to point to your source `client.py` file.
@@ -66,8 +75,8 @@ Lastly, update the installed manifest file for your browser to point to the clie
 
 This information is only here for advanced users.
 Different operating systems and browsers have different requirements.
-For this purpose, I created an [Installers](#Installing) for each OS.
-For more details, see the [More Info](#More-Info) section below.
+For this purpose, I created an [Installers](#installing) for each OS.
+For more details, see the [Additional Info](#additional-information) section below.
 
 ## Building
 
@@ -85,7 +94,7 @@ Note: FFmpeg must be placed in `dist/ffmpeg.exe`
 Build the App:
 
 ```shell
-python -m pip install -r requirements.txt
+python -m pip install --group build
 pyinstaller --noconfirm client.spec
 python manifest.py
 ```
@@ -101,7 +110,7 @@ iscc.exe client.iss
 Note: FFmpeg must be placed in `dist/ffmpeg`
 
 ```shell
-#python -m pip install -r requirements.txt
+#python -m pip install --group build
 python manifest.py
 bash build-linux.sh
 ```
@@ -117,7 +126,7 @@ Note: FFmpeg must be placed in `dist/ffmpeg`
 Build the App:
 
 ```shell
-python -m pip install -r requirements.txt
+python -m pip install --group build
 pyinstaller --noconfirm client.spec
 python manifest.py
 ```
@@ -128,7 +137,7 @@ Create the Package:
 bash build-mac.sh
 ```
 
-## More Info
+### Additional Information
 
 Windows requires corresponding registry entries for the manifest files (see location links below).
 
@@ -148,11 +157,27 @@ must be present in that location due to the current logging configuration in the
 
 The `client.py` must be executable by the user with Python installed and working.
 
+# Support
+
+If you run into any issues or need help getting started, please do one of the following:
+
+- Report an Issue: <https://github.com/cssnr/hls-downloader-client/issues>
+- Q&A Discussion: <https://github.com/cssnr/hls-downloader-client/discussions/categories/q-a>
+- Request a Feature: <https://github.com/cssnr/hls-downloader-client/issues/new?template=1-feature.yaml>
+- Chat with us on Discord: <https://discord.gg/wXy6m2X8wY>
+
+[![Features](https://img.shields.io/badge/features-brightgreen?style=for-the-badge&logo=rocket&logoColor=white)](https://github.com/cssnr/hls-downloader-client/issues/new?template=1-feature.yaml)
+[![Issues](https://img.shields.io/badge/issues-red?style=for-the-badge&logo=southwestairlines&logoColor=white)](https://github.com/cssnr/hls-downloader-client/issues)
+[![Discussions](https://img.shields.io/badge/discussions-blue?style=for-the-badge&logo=theconversation&logoColor=white)](https://github.com/cssnr/hls-downloader-client/discussions)
+[![Discord](https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/wXy6m2X8wY)
+
 # Contributing
+
+If you would like to submit a PR, please review the [CONTRIBUTING.md](#contributing-ov-file).
 
 Please consider making a donation to support the development of this project
 and [additional](https://cssnr.com/) open source projects.
 
-[![Support](https://img.shields.io/badge/Ko--fi-579fbf?style=for-the-badge&logo=kofi&label=Support)](https://ko-fi.com/cssnr)
+[![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/cssnr)
 
 For a full list of current projects visit: [https://cssnr.github.io/](https://cssnr.github.io/)
