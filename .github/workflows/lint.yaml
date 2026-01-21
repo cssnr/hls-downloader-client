@@ -54,7 +54,7 @@ jobs:
         continue-on-error: true
         if: ${{ !cancelled() }}
         run: |
-          uv run ty check -v
+          ty check -v
 
       - name: "psf/black"
         if: ${{ !cancelled() }}
@@ -67,22 +67,22 @@ jobs:
       - name: "mypy"
         if: ${{ !cancelled() }}
         run: |
-          uvx toml-run mypy
+          toml-run mypy
 
       - name: "bandit"
         if: ${{ !cancelled() }}
         run: |
-          uvx toml-run bandit
+          toml-run bandit
 
       - name: "tombi"
         if: ${{ !cancelled() }}
         run: |
-          uv run tombi lint
+          tombi lint
 
       - name: "yamllint"
         if: ${{ !cancelled() }}
         run: |
-          uvx toml-run yamllint
+          toml-run yamllint
 
       - name: "prettier"
         if: ${{ !cancelled() }}
