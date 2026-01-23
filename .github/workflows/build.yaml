@@ -55,6 +55,7 @@ jobs:
       - name: "Inno Setup"
         env:
           version: ${{ github.event_name == 'release' && github.ref_name || '0.0.1' }}
+        shell: pwsh
         run: |
           echo "Building Version: ${{ env.version }}"
           iscc.exe "/DMyAppVersion=${{ env.version }}" client.iss
