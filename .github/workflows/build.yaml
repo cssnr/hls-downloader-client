@@ -15,17 +15,17 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v6
 
-      - name: "Setup Python 3.10"
+      - name: "Setup Python 3.11"
         uses: actions/setup-python@v6
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
       - name: "PyInstaller"
         run: |
           python -m pip install -U pip
           python -m pip install --group build
-          pyinstaller --noconfirm client.spec
-          python manifest.py
+          run pyinstaller
+          run manifest
 
       - name: "Download FFmpeg"
         uses: robinraju/release-downloader@v1.10
@@ -50,18 +50,21 @@ jobs:
           Get-Content src/version.txt
 
       - name: "Inno Setup"
+        env:
+          version: ${{ github.event_name == 'release' && github.ref_name || '0.0.1' }}
         run: |
-          echo "Building Version: ${{ github.ref_name }}"
-          iscc.exe /DMyAppVersion=${{ github.ref_name }} client.iss
+          echo "Building Version: ${{ env.version }}"
+          iscc.exe /DMyAppVersion=${{ env.version }} client.iss
 
-      - name: "Debug Inno"
+      - name: "Debug Output"
+        continue-on-error: true
         run: |
           ls -lAhR out
 
       - name: "Upload to Actions"
         uses: actions/upload-artifact@v6
         with:
-          name: installer
+          name: install-win
           path: out
 
       - name: "Upload Release"
@@ -69,6 +72,7 @@ jobs:
         uses: cssnr/upload-release-action@v1
         with:
           globs: out/*
+          overwrite: true
 
   linux:
     name: "Linux"
@@ -79,10 +83,10 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v6
 
-      - name: "Setup Python 3.10"
+      - name: "Setup Python 3.11"
         uses: actions/setup-python@v6
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
       - name: "Download FFmpeg"
         uses: robinraju/release-downloader@v1.10
@@ -110,10 +114,10 @@ jobs:
           python manifest.py
           bash build-linux.sh
 
-      - name: "Debug"
+      - name: "Debug Output"
         continue-on-error: true
         run: |
-          ls -R
+          ls -lAhR out
 
       - name: "Upload to Actions"
         uses: actions/upload-artifact@v6
@@ -138,10 +142,10 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v6
 
-      - name: "Setup Python 3.10"
+      - name: "Setup Python 3.11"
         uses: actions/setup-python@v6
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
       - name: "Setup Packages"
         # noinspection HttpUrlsUsage
@@ -169,14 +173,14 @@ jobs:
         run: |
           python -m pip install -U pip
           python -m pip install --group build
-          pyinstaller --noconfirm client.spec
-          python manifest.py
+          run pyinstaller
+          run manifest
           bash build-mac.sh
 
-      - name: "Debug"
+      - name: "Debug Output"
         continue-on-error: true
         run: |
-          ls -R
+          ls -lAhR out
 
       - name: "Upload to Actions"
         uses: actions/upload-artifact@v6
@@ -205,3 +209,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           vt_api_key: ${{ secrets.VT_API_KEY }}
           update_release: true
+          collapsed: true

@@ -95,9 +95,10 @@ Note: FFmpeg must be placed in `dist/ffmpeg.exe`
 Build the App:
 
 ```shell
+python -m pip install -U pip
 python -m pip install --group build
-pyinstaller --noconfirm client.spec
-python manifest.py
+run pyinstaller
+run manifest
 ```
 
 Create the Installer:
@@ -111,6 +112,7 @@ iscc.exe client.iss
 Note: FFmpeg must be placed in `dist/ffmpeg`
 
 ```shell
+#python -m pip install -U pip
 #python -m pip install --group build
 python manifest.py
 bash build-linux.sh
@@ -127,9 +129,10 @@ Note: FFmpeg must be placed in `dist/ffmpeg`
 Build the App:
 
 ```shell
+python -m pip install -U pip
 python -m pip install --group build
-pyinstaller --noconfirm client.spec
-python manifest.py
+run pyinstaller
+run manifest
 ```
 
 Create the Package:
