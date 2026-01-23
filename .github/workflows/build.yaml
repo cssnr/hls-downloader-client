@@ -5,9 +5,6 @@ on:
   release:
     types: [published]
 
-env:
-  ffmpeg-version: 8.0.1
-
 jobs:
   windows:
     name: "Windows"
@@ -16,10 +13,10 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: "Setup Python"
-        uses: actions/setup-python@v5
+      - name: "Setup Python 3.10"
+        uses: actions/setup-python@v6
         with:
           python-version: "3.10"
 
@@ -33,50 +30,45 @@ jobs:
       - name: "Download FFmpeg"
         uses: robinraju/release-downloader@v1.10
         with:
-          repository: "BtbN/FFmpeg-Builds"
-          fileName: "ffmpeg-master-latest-win64-gpl.zip"
-          out-file-path: "dist"
+          repository: BtbN/FFmpeg-Builds
+          fileName: ffmpeg-master-latest-win64-gpl.zip
+          out-file-path: dist
           latest: true
           extract: true
 
       - name: "Move FFmpeg"
         run: |
           mv dist/ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe dist/ffmpeg.exe
-          ls dist
+          file dist/ffmpeg.exe
 
       - name: "Write Version"
         if: ${{ github.event_name == 'release' }}
+        shell: powershell
         run: |
           Write-Output "GITHUB_REF_NAME: $env:GITHUB_REF_NAME"
-          Get-Content src/version.txt
           $env:GITHUB_REF_NAME | Set-Content src\version.txt
           Get-Content src/version.txt
 
       - name: "Inno Setup"
-        uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
-        with:
-          path: client.iss
-          options: "/DMyAppVersion=${{ github.ref_name }}"
-
-      - name: "Debug"
         run: |
-          ls -R
+          echo "Building Version: ${{ github.ref_name }}"
+          iscc.exe /DMyAppVersion=${{ github.ref_name }} client.iss
+
+      - name: "Debug Inno"
+        run: |
+          ls -lAhR out
 
       - name: "Upload to Actions"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
-          name: install-win
+          name: installer
           path: out
 
-      - name: "Upload to Release"
-        uses: svenstaro/upload-release-action@v2
+      - name: "Upload Release"
         if: ${{ github.event_name == 'release' }}
+        uses: cssnr/upload-release-action@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: out/*
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
+          globs: out/*
 
   linux:
     name: "Linux"
@@ -95,24 +87,23 @@ jobs:
       - name: "Download FFmpeg"
         uses: robinraju/release-downloader@v1.10
         with:
-          repository: "BtbN/FFmpeg-Builds"
-          fileName: "ffmpeg-master-latest-linux64-gpl.tar.xz"
-          out-file-path: "dist"
+          repository: BtbN/FFmpeg-Builds
+          fileName: ffmpeg-master-latest-linux64-gpl.tar.xz
+          out-file-path: dist
           latest: true
 
       - name: "Move FFmpeg"
         run: |
           tar -xf dist/ffmpeg-master-latest-linux64-gpl.tar.xz -C dist ffmpeg-master-latest-linux64-gpl/bin/ffmpeg
           mv dist/ffmpeg-master-latest-linux64-gpl/bin/ffmpeg dist/ffmpeg
-          ls dist
+          file dist/ffmpeg
 
       - name: "Write Version"
         if: ${{ github.event_name == 'release' }}
         run: |
           echo GITHUB_REF_NAME: "$GITHUB_REF_NAME"
-          cat src/version.txt
           echo "$GITHUB_REF_NAME" > src/version.txt
-          cat src/version.txt
+          cat -n src/version.txt
 
       - name: "Debian Package"
         run: |
@@ -138,9 +129,10 @@ jobs:
           overwrite: true
 
   macos:
-    name: "macOS"
-    runs-on: macos-latest
+    name: "macOS Intel"
+    runs-on: macos-15-intel
     timeout-minutes: 5
+    # NOTE: This downloads MacOS Intel FFMpeg and should build on macos-15-intel
 
     steps:
       - name: "Checkout"
@@ -152,6 +144,7 @@ jobs:
           python-version: "3.10"
 
       - name: "Setup Packages"
+        # noinspection HttpUrlsUsage
         run: |
           curl http://s.sudre.free.fr/Software/files/Packages.dmg -o Packages.dmg
           hdiutil attach Packages.dmg
@@ -161,17 +154,16 @@ jobs:
       - name: "Download FFmpeg"
         run: |
           mkdir -p dist
-          curl "https://evermeet.cx/ffmpeg/ffmpeg-${{ env.ffmpeg-version }}.zip" -o "dist/ffmpeg.zip"
-          unzip "dist/ffmpeg.zip" -d "dist"
-          ls dist
+          curl -L "https://evermeet.cx/ffmpeg/getrelease/zip" -o "dist/ffmpeg.zip"
+          unzip dist/ffmpeg.zip -d "dist"
+          file dist/ffmpeg
 
       - name: "Write Version"
         if: ${{ github.event_name == 'release' }}
         run: |
           echo GITHUB_REF_NAME: "$GITHUB_REF_NAME"
-          cat src/version.txt
           echo "$GITHUB_REF_NAME" > src/version.txt
-          cat src/version.txt
+          cat -n src/version.txt
 
       - name: "PyInstaller"
         run: |

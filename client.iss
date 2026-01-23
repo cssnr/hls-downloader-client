@@ -2,10 +2,10 @@
 #define MyAppPublisher "CSSNR"
 #define MyAppURL "https://github.com/cssnr/hls-downloader-client"
 #define MyAppExeName "client.exe"
-#define MyAppFolder "org.cssnr.hls.downloader"
 #ifndef MyAppVersion
-#define MyAppVersion "0.0.1"
+  #define MyAppVersion "0.0.1"
 #endif
+#define MyAppFolder "org.cssnr.hls.downloader"
 
 [Setup]
 AppId={{451A067A-06E7-4979-92EB-745C1E14AD5F}
@@ -16,20 +16,27 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-Compression=lzma
+;Compression=lzma
+;SolidCompression=yes
 DefaultDirName={localappdata}\{#MyAppFolder}
+DefaultGroupName={#MyAppName}
 ;DisableDirPage=yes
 DisableProgramGroupPage=yes
-DefaultGroupName={#MyAppName}
-InfoBeforeFile=INSTALL.md
+InfoBeforeFile=assets\pre-install.rtf
+InfoAfterFile=assets\post-install.rtf
+
 OutputBaseFilename=install-win
 OutputDir=out
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 SetupIconFile=src\favicon.ico
-SolidCompression=yes
 UninstallDisplayIcon={app}\{#MyAppExeName}
-WizardStyle=modern
+WizardStyle=modern dynamic
+
+;ChangesEnvironment=yes
+;DisableFinishedPage=yes
+;LicenseFile=LICENSE
+;VersionInfoVersion={#MyAppVersion}
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

@@ -2,15 +2,19 @@
 .idea/
 *.iml
 .vscode/
+.*cache*
+node_modules/
+build/
+dist/
+out/
 .venv/
 venv/
 __pycache__/
 *.egg-info/
-build/
-dist/
-.*cache
-*.log
 *.pyc
 .coverage
 coverage.xml
+# App
+*.log
 *.txt
+*.exe
