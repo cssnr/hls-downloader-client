@@ -57,7 +57,7 @@ jobs:
           version: ${{ github.event_name == 'release' && github.ref_name || '0.0.1' }}
         run: |
           echo "Building Version: ${{ env.version }}"
-          iscc.exe /DMyAppVersion=${{ env.version }} client.iss
+          iscc.exe "/DMyAppVersion=${{ env.version }}" client.iss
 
       - name: "Debug Output"
         continue-on-error: true
