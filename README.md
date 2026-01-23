@@ -17,6 +17,9 @@
 
 # HLS Video Downloader Client
 
+<a title="HLS Video Downloader" href="https://github.com/cssnr/hls-video-downloader" target="_blank">
+<img alt="HLS Video Downloader" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/cssnr/hls-downloader-client/refs/heads/master/assets/logo.png"></a>
+
 - [Browsers](#Browsers)
 - [Installing](#Installing)
 - [Building](#Building)
