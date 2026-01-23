@@ -13,11 +13,14 @@ dev = [
   "mypy>=1.14.1",
   "ruff>=0.14.9",
   "tombi>=0.7.7",
-  "toml-run>=0.0.2",
   "ty>=0.0.7",
   "yamllint>=1.35.1",
+  { include-group = "build" },
 ]
-build = ["pyinstaller==6.8.0"]
+build = [
+  "pyinstaller==6.8.0",
+  "toml-run>=0.0.2",
+]
 
 # Bandit
 # https://bandit.readthedocs.io/en/latest/config.html
@@ -65,8 +68,9 @@ select = ["E4", "E7", "E9", "F", "B", "Q"]
 # Scripts
 # https://github.com/cssnr/toml-run
 [tool.scripts]
-inno = ["iscc.exe client.iss"]
+inno = "iscc.exe client.iss"
 pyinstaller = "pyinstaller -y -D -n client -i src/favicon.ico --hidden-import pkg_resources.extern src/client.py"
+manifest = "python manifest.py"
 format = ["black .", "tombi format .", "ruff format ."]
 lint = [
   "run bandit",
