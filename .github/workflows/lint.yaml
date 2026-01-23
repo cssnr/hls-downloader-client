@@ -98,7 +98,7 @@ jobs:
         with:
           shellcheck_opts: -e SC2012
 
-      - name: "ShellCheck"
+      - name: "shellcheck"
         if: ${{ !cancelled() }}
         uses: ludeeus/action-shellcheck@master
         env:

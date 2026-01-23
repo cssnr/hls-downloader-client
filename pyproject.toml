@@ -65,6 +65,8 @@ select = ["E4", "E7", "E9", "F", "B", "Q"]
 # Scripts
 # https://github.com/cssnr/toml-run
 [tool.scripts]
+inno = ["iscc.exe client.iss"]
+pyinstaller = "pyinstaller -D -n client -i src/favicon.ico --hidden-import pkg_resources.extern src/client.py"
 format = ["black .", "tombi format .", "ruff format ."]
 lint = [
   "run bandit",
