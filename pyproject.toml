@@ -1,7 +1,7 @@
 [project]
 name = "hls-downloader-app"
 version = "0.0.0"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 classifiers = ["Private :: Do Not Upload"]
 # dependencies = ["pyinstaller==6.8.0"]
 

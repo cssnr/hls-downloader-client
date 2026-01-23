@@ -15,10 +15,10 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v6
 
-      - name: "Setup Python 3.10"
+      - name: "Setup Python 3.11"
         uses: actions/setup-python@v6
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
       - name: "PyInstaller"
         run: |
@@ -79,10 +79,10 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v6
 
-      - name: "Setup Python 3.10"
+      - name: "Setup Python 3.11"
         uses: actions/setup-python@v6
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
       - name: "Download FFmpeg"
         uses: robinraju/release-downloader@v1.10
@@ -138,10 +138,10 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v6
 
-      - name: "Setup Python 3.10"
+      - name: "Setup Python 3.11"
         uses: actions/setup-python@v6
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
       - name: "Setup Packages"
         # noinspection HttpUrlsUsage
