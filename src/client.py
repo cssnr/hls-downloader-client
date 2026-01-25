@@ -121,7 +121,13 @@ def download(message: Dict[str, Any]) -> None:
     logger.info("Destination File Path: %s", filepath)
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg:
-        ffmpeg = os.path.join(os.getcwd(), "ffmpeg")
+        system = platform.system()
+        if system == "Linux":
+            src_path = Path(__file__).resolve().parent
+            ffmpeg = os.path.join(src_path, "ffmpeg")
+        else:
+            ffmpeg = os.path.join(os.getcwd(), "ffmpeg")
+
     args = [ffmpeg, "-i", url]
     if "extra" in message and message["extra"]:
         args.extend(["-i", message["extra"]])
