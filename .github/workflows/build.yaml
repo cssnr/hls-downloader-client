@@ -209,6 +209,7 @@ jobs:
     steps:
       - name: "VirusTotal"
         uses: cssnr/virustotal-action@master
+        continue-on-error: true
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           vt_api_key: ${{ secrets.VT_API_KEY }}

@@ -45,7 +45,7 @@ Package: ${PKG_NAME}
 Version: ${VERSION}
 Section: base
 Priority: optional
-Architecture: i386
+Architecture: all
 Maintainer: CSSNR
 Description:  HLS Video Downloader Native Client
 EOF
